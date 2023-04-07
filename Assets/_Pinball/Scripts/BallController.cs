@@ -43,6 +43,18 @@ public class BallController : MonoBehaviour
             Destroy(particle.gameObject, 1f);
             Destroy(other.gameObject);
             gameManager.CreateTarget();
+        } else if(other.CompareTag("ExtraBall") && !gameManager.gameOver)
+        {
+            SoundManager.Instance.PlaySound(SoundManager.Instance.rewarded);
+
+            ParticleSystem particle = Instantiate(gameManager.hitTemporarySkill, other.transform.position, Quaternion.identity) as ParticleSystem;
+            var main = particle.main;
+            main.startColor = other.gameObject.GetComponent<SpriteRenderer>().color;
+            particle.Play();
+            Destroy(particle.gameObject, 1f);
+            Destroy(other.gameObject);
+            gameManager.DestroyTemporarySkill();
+            gameManager.CreateBall();
         }
     }
 

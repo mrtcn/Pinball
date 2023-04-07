@@ -45,16 +45,18 @@ public class GameManager : MonoBehaviour
     }
 
     private GameState _gameState = GameState.Prepare;
-
+    private Coroutine _tempSkillCoroutine;
     [Header("Gameplay References")]
     public UIManager uIManager;
     public GameObject ballPrefab;
     public GameObject ballPoint;
     public GameObject obstacleManager;
     public GameObject targetPointManager;
+    public GameObject temporarySkillPointManager;
     public GameObject leftFlipper;
     public GameObject rightFlipper;
     public GameObject targetPrefab;
+    public GameObject extraBallPrefab;
     public GameObject ushape;
     public GameObject background;
     public GameObject fence;
@@ -62,8 +64,13 @@ public class GameManager : MonoBehaviour
     public GameObject currentTargetPoint;
     [HideInInspector]
     public GameObject currentTarget;
+    [HideInInspector]
+    public GameObject currentTemporarySkillPoint;
+    [HideInInspector]
+    public GameObject currentTemporarySkill;
     public ParticleSystem die;
     public ParticleSystem hitGold;
+    public ParticleSystem hitTemporarySkill;
     [HideInInspector]
     public bool gameOver;
 
@@ -73,8 +80,10 @@ public class GameManager : MonoBehaviour
     public int scoreToIncreaseDifficulty = 10;
     public float targetAliveTime = 20;
     public float targetAliveTimeDecreaseValue = 2;
+    public float temporarySkillAliveTime = 10;
+    public float temporarySkillAliveTimeDecreaseValue = 1;
     public int minTargetAliveTime = 3;
-    public int scoreToAddedBall = 15;
+    public int scoreToAddTemporarySkill = 1;
 
     private List<GameObject> listBall = new List<GameObject>();
     private Rigidbody2D leftFlipperRigid;
@@ -94,6 +103,7 @@ public class GameManager : MonoBehaviour
 
         ScoreManager.Instance.Reset();
         currentTargetPoint = null;
+        currentTemporarySkillPoint = null;
         leftFlipperRigid = leftFlipper.GetComponent<Rigidbody2D>();
         rightFlipperRigid = rightFlipper.GetComponent<Rigidbody2D>();
         ushapeSpriteRenderer = ushape.GetComponent<SpriteRenderer>();
@@ -105,7 +115,7 @@ public class GameManager : MonoBehaviour
         //Change color of backgorund, ushape, fence, flippers
         Color color = backgroundColor[Random.Range(0, backgroundColor.Length)];
         ushapeSpriteRenderer.color = color;
-        backgroundSpriteRenderer.color = color;
+        backgroundSpriteRenderer.color = color; 
         fenceSpriteRenderer.color = color;
         leftFlipperSpriteRenderer.color = color;
         rightFlipperSpriteRenderer.color = color;
@@ -170,8 +180,17 @@ public class GameManager : MonoBehaviour
         currentTargetPoint = targetPoint;
         Vector2 pos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
         currentTarget = Instantiate(targetPrefab, pos, Quaternion.identity) as GameObject;
+        StartCoroutine("Processing");
 
-        StartCoroutine(Processing());
+        ////Enable extraBall, create extraball at that position and start processing
+        //GameObject extraBallPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+        //extraBallPoint.SetActive(true);
+        //currentTemporarySkillPoint = extraBallPoint;
+        //Vector2 extraBallPos = Camera.main.ScreenToWorldPoint(currentTemporarySkillPoint.transform.position);
+        //currentTemporarySkill = Instantiate(extraBallPrefab, extraBallPos, Quaternion.identity) as GameObject;
+
+
+        //StartCoroutine("TemporarySkillProcessing"); 
     }
 
     void GameOver()
@@ -201,7 +220,7 @@ public class GameManager : MonoBehaviour
         if (!gameOver)
         {
             //Stop all processing, disable current gold
-            StopAllCoroutines();
+            StopCoroutine("Processing");
             currentTargetPoint.SetActive(false);
 
             //Random new goldPoint and create new gold, then start processing
@@ -214,8 +233,48 @@ public class GameManager : MonoBehaviour
             currentTargetPoint = goldPoint;
             Vector2 goldPos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
             currentTarget = Instantiate(targetPrefab, goldPos, Quaternion.identity) as GameObject;
-            StartCoroutine(Processing());
-        }      
+            StartCoroutine("Processing");
+        }
+    }
+
+    /// <summary>
+    /// Destroy extra ball skill and its process
+    /// </summary>
+    public void DestroyTemporarySkill()
+    {
+        //Stop all processing, disable current extra ball
+        if (_tempSkillCoroutine != null)
+            StopCoroutine(_tempSkillCoroutine);
+
+        if (currentTemporarySkill != null)
+            currentTemporarySkill.SetActive(false);
+
+        if (currentTemporarySkillPoint != null)
+            currentTemporarySkillPoint.SetActive(false);
+    }
+
+    /// <summary>
+    /// Create extra ball
+    /// </summary>
+    public void CreateExtraBallSkill()
+    {
+        if (!gameOver)
+        {
+            if (currentTemporarySkillPoint == null)
+                currentTemporarySkillPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+
+            //Random new extraBallPoing and create new ExtraBall, then start processing
+            GameObject extraBallPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+            while (currentTemporarySkillPoint == extraBallPoint)
+            {
+                extraBallPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+            }
+            extraBallPoint.SetActive(true);
+            currentTemporarySkillPoint = extraBallPoint;
+            Vector2 extraBallPos = Camera.main.ScreenToWorldPoint(currentTemporarySkillPoint.transform.position);
+            currentTemporarySkill = Instantiate(extraBallPrefab, extraBallPos, Quaternion.identity) as GameObject;
+            _tempSkillCoroutine = StartCoroutine(TemporarySkillProcessing());
+        }
     }
 
     /// <summary>
@@ -241,6 +300,19 @@ public class GameManager : MonoBehaviour
             particle.Play();
             Destroy(particle.gameObject, 1f);
             Destroy(currentTarget.gameObject);
+
+            if(currentTemporarySkill != null && currentTemporarySkillPoint != null)
+            {
+                currentTemporarySkillPoint.SetActive(false);
+
+                ParticleSystem temporarySkillParticle = Instantiate(hitTemporarySkill, currentTemporarySkill.transform.position, Quaternion.identity) as ParticleSystem;
+                var temporarySkillMain = temporarySkillParticle.main;
+                temporarySkillMain.startColor = currentTemporarySkill.gameObject.GetComponent<SpriteRenderer>().color;
+                temporarySkillParticle.Play();
+                Destroy(temporarySkillParticle.gameObject, 1f);
+                Destroy(currentTemporarySkill.gameObject);
+            }
+            
 
             GameOver();           
         }
@@ -279,9 +351,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (ScoreManager.Instance.Score % scoreToAddedBall == 0)
+        if (ScoreManager.Instance.Score % scoreToAddTemporarySkill == 0)
         {
-            CreateBall();
+            DestroyTemporarySkill();
+            CreateExtraBallSkill();
         }
     }
 
@@ -318,6 +391,33 @@ public class GameManager : MonoBehaviour
             Destroy(currentTarget.gameObject);
 
             GameOver();
-        }      
+        }
+    }
+
+    IEnumerator TemporarySkillProcessing()
+    {
+        Image img = currentTemporarySkillPoint.GetComponent<Image>();
+        img.fillAmount = 0;
+        float t = 0;
+        while (t < temporarySkillAliveTime)
+        {
+            t += Time.deltaTime;
+            float fraction = t / temporarySkillAliveTime;
+            float newF = Mathf.Lerp(0, 1, fraction);
+            img.fillAmount = newF;
+            yield return null;
+        }
+
+        if (!gameOver)
+        {
+            currentTemporarySkillPoint.SetActive(false);
+
+            ParticleSystem particle = Instantiate(hitTemporarySkill, currentTemporarySkill.transform.position, Quaternion.identity) as ParticleSystem;
+            var main = particle.main;
+            main.startColor = currentTemporarySkill.gameObject.GetComponent<SpriteRenderer>().color;
+            particle.Play();
+            Destroy(particle.gameObject, 1f);
+            Destroy(currentTemporarySkill.gameObject);
+        }
     }
 }
