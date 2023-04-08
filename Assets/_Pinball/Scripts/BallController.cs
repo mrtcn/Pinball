@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 using SgLib;
 
 public class BallController : MonoBehaviour
 {
+
+    public static event System.Action<GameObject> BallLost = delegate { };
+    public static event System.Action ExtraLifeCollected = delegate { };
 
     private GameManager gameManager;
     private SpriteRenderer spriteRenderer;
@@ -23,8 +25,10 @@ public class BallController : MonoBehaviour
         if (col.gameObject.CompareTag("Dead") && !gameManager.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.eploring);
-            gameManager.CheckGameOver(gameObject);
-            Exploring();
+            
+            BallLost(gameObject);
+
+            Exploring();            
         }
     }
 
@@ -36,26 +40,32 @@ public class BallController : MonoBehaviour
             ScoreManager.Instance.AddScore(1);
             gameManager.CheckAndUpdateValue();
 
-            ParticleSystem particle = Instantiate(gameManager.hitGold, other.transform.position, Quaternion.identity) as ParticleSystem;
-            var main = particle.main;
-            main.startColor = other.gameObject.GetComponent<SpriteRenderer>().color;
-            particle.Play();
-            Destroy(particle.gameObject, 1f);
-            Destroy(other.gameObject);
+            PlayParticle(other, gameManager.hitGold);
             gameManager.CreateTarget();
         } else if(other.CompareTag("ExtraBall") && !gameManager.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.rewarded);
-
-            ParticleSystem particle = Instantiate(gameManager.hitTemporarySkill, other.transform.position, Quaternion.identity) as ParticleSystem;
-            var main = particle.main;
-            main.startColor = other.gameObject.GetComponent<SpriteRenderer>().color;
-            particle.Play();
-            Destroy(particle.gameObject, 1f);
-            Destroy(other.gameObject);
-            gameManager.DestroyTemporarySkill();
+            PlayParticle(other, gameManager.hitTemporarySkill);
+            gameManager.PlayTemporarySkillParticle();
             gameManager.CreateBall();
         }
+        else if (other.CompareTag("ExtraLife") && !gameManager.gameOver)
+        {
+            SoundManager.Instance.PlaySound(SoundManager.Instance.rewarded);
+            PlayParticle(other, gameManager.hitGold);
+            gameManager.PlayTemporarySkillParticle();
+            ExtraLifeCollected();
+        }
+    }
+
+    private void PlayParticle(Collider2D other, ParticleSystem particleSystem)
+    {
+        ParticleSystem particle = Instantiate(particleSystem, other.transform.position, Quaternion.identity) as ParticleSystem;
+        var main = particle.main;
+        main.startColor = other.gameObject.GetComponent<SpriteRenderer>().color;
+        particle.Play();
+        Destroy(particle.gameObject, 1f);
+        Destroy(other.gameObject);
     }
 
     /// <summary>
