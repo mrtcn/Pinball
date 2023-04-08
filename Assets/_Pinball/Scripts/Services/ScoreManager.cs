@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
 
 namespace SgLib
 {
@@ -18,6 +17,7 @@ namespace SgLib
         public static event Action<int> HighscoreUpdated = delegate {};
 
         private const string HIGHSCORE = "HIGHSCORE";
+        private const string PLAYED = "PLAYED";
         // key name to store high score in PlayerPrefs
 
         void Awake()
@@ -75,6 +75,15 @@ namespace SgLib
                 PlayerPrefs.SetInt(HIGHSCORE, HighScore);
                 HighscoreUpdated(HighScore);
             }
+        }
+
+        public int UpdatePlayedGame(int amount)
+        {
+            var played = PlayerPrefs.GetInt(PLAYED, 0);
+            played++;
+            PlayerPrefs.SetInt(PLAYED, played);
+
+            return played;
         }
     }
 }
