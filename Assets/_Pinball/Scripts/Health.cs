@@ -14,16 +14,45 @@ public class Health : MonoBehaviour
     private AdManager adManager;
     private readonly int playedToShowAd = 2;
 
+    int updatesBeforeException;
+
     public float currentHealth { get; private set; }
 
     private void Start()
     {
+        updatesBeforeException = 0;
+
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize((InitializationStatus initStatus) =>
         {
             // This callback is called once the MobileAds SDK is initialized.
             adManager.LoadInterstitialAd();
         });
+    }
+
+    private void Update()
+    {
+        // Call the exception-throwing method here so that it's run
+        // every frame update
+        throwExceptionEvery60Updates();
+    }
+    // A method that tests your Crashlytics implementation by throwing an
+    // exception every 60 frame updates. You should see reports in the
+    // Firebase console a few minutes after running your app with this method.
+    void throwExceptionEvery60Updates()
+    {
+        if (updatesBeforeException > 0)
+        {
+            updatesBeforeException--;
+        }
+        else
+        {
+            // Set the counter to 60 updates
+            updatesBeforeException = 60;
+
+            // Throw an exception to test your Crashlytics implementation
+            throw new System.Exception("test exception please ignore");
+        }
     }
 
     private void OnDestroy()
