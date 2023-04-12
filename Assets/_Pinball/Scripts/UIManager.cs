@@ -202,9 +202,10 @@ public class UIManager : MonoBehaviour
 
     public void ShareScreenshot()
     {
-        #if EASY_MOBILE
+#if EASY_MOBILE
         ScreenshotSharer.Instance.ShareScreenshot();
-        #endif
+#endif
+        throw new System.Exception("Test exception is thrown. Ignore it.");
     }
 
     public void ToggleSound()
