@@ -136,7 +136,7 @@ PlayerSettings:
     Others: 1
   bundleVersion: 1.0
   preloadedAssets:
-  - {fileID: 8334334522705622311, guid: 8d8c52f80bf367f4093701b96153a736, type: 2}
+  - {fileID: -7570087112078383302, guid: 8d8c52f80bf367f4093701b96153a736, type: 2}
   - {fileID: 11400000, guid: a242edaa03c989f488461a0813d9fe91, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -160,13 +160,13 @@ PlayerSettings:
     Android: com.Duto.PinballCrush
     Standalone: unity.Your Company.Simple Pinball
     Tizen: com.sglib.demogame
-    iPhone: com.Duto.Pinball-Crush
+    iPhone: com.Duto.PinballCrush
     tvOS: com.sglib.demogame
   buildNumber:
     Standalone: 0
     iPhone: 1
     tvOS: 0
-  overrideDefaultApplicationIdentifier: 0
+  overrideDefaultApplicationIdentifier: 1
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 28
   AndroidTargetSdkVersion: 33
@@ -183,7 +183,7 @@ PlayerSettings:
   StripUnusedMeshComponents: 0
   VertexChannelCompressionMask: 214
   iPhoneSdkVersion: 988
-  iOSTargetOSVersionString: 12.0
+  iOSTargetOSVersionString: 14.2
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
   tvOSTargetOSVersionString: 12.0

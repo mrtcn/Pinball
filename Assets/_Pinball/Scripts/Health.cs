@@ -51,7 +51,14 @@ public class Health : MonoBehaviour
             updatesBeforeException = 60;
 
             // Throw an exception to test your Crashlytics implementation
-            throw new System.Exception("test exception please ignore");
+	    try
+	    {
+            	throw new System.Exception("test exception please ignore");
+	    }
+	    catch(Exception ex)
+	    {
+	    }
+
         }
     }
 
