@@ -181,6 +181,7 @@ namespace SgLib
             PlayerPrefs.SetInt(PLAYED, played);
 
             FirebaseAnalyticsManager.SendPlayedAmountEvent(played);
+            FirebaseAnalyticsManager.SetProperty("played", played.ToString());
 
             return played;
         }

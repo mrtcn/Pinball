@@ -28,5 +28,10 @@ namespace Assets._Pinball.Scripts.Services
         {
             FirebaseAnalytics.LogEvent("application_quit_info", "application_quit_info_param", JsonUtility.ToJson(applicationQuitInfo));
         }
+
+        public static void SetProperty(string propertyName, string value) 
+        {
+            FirebaseAnalytics.SetUserProperty(propertyName, value);
+        }
     }
 }

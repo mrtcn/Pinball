@@ -58,12 +58,22 @@ namespace SgLib
             if (Score > HighScore)
             {
                 UpdateHighScore(Score);
+                SetHighScoreProperties();
+
                 HasNewHighScore = true;
             }
             else
             {
                 HasNewHighScore = false;
             }
+        }
+
+        private void SetHighScoreProperties()
+        {
+            if (Score > 9 && Score < 20)
+                FirebaseAnalyticsManager.SetProperty("highscore_10+", "10");
+            else if (Score > 19 && Score < 30)
+                FirebaseAnalyticsManager.SetProperty("highscore_20+", "20");
         }
 
         public void UpdateHighScore(int newHighScore)
