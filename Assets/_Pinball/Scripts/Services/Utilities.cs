@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using System;
+using Assets._Pinball.Scripts.Services;
 
 namespace SgLib
 {
@@ -17,6 +18,7 @@ namespace SgLib
     /// </summary>
     public class Utilities : MonoBehaviour
     {
+        private const string PLAYED = "PLAYED";
         public static Utilities Instance { get; private set; }
 
         void Awake()
@@ -165,6 +167,31 @@ namespace SgLib
                 return DateTime.FromBinary(Convert.ToInt64(storedTime));
             else
                 return defaultTime;
+        }
+
+        /// <summary>
+        /// Increment the overall played games amount by 1
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public int UpdatePlayedGame(int amount)
+        {
+            var played = PlayerPrefs.GetInt(PLAYED, 0);
+            played++;
+            PlayerPrefs.SetInt(PLAYED, played);
+
+            FirebaseAnalyticsManager.SendPlayedAmountEvent(played);
+
+            return played;
+        }
+
+        /// <summary>
+        /// Returns the overall played games amount
+        /// </summary>
+        /// <returns></returns>
+        public int PlayedGameAmount()
+        {
+            return PlayerPrefs.GetInt(PLAYED, 0);
         }
     }
 }

@@ -67,10 +67,11 @@ public class Health : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth - dropAmount, 0, startingHealth);
 
-        if(currentHealth < 1) 
+        if(currentHealth < 1)
         {
+            //GAME OVER
             NoLifeLeft();
-            var played = ScoreManager.Instance.UpdatePlayedGame(1);
+            var played = Utilities.Instance.UpdatePlayedGame(1);
             if(played % playedToShowAd == 0)
                 adManager.ShowAd();
         }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Assets._Pinball.Scripts.Services;
 
 namespace SgLib
 {
@@ -16,9 +17,8 @@ namespace SgLib
         public static event Action<int> ScoreUpdated = delegate {};
         public static event Action<int> HighscoreUpdated = delegate {};
 
-        private const string HIGHSCORE = "HIGHSCORE";
-        private const string PLAYED = "PLAYED";
         // key name to store high score in PlayerPrefs
+        private const string HIGHSCORE = "HIGHSCORE";
 
         void Awake()
         {
@@ -74,16 +74,14 @@ namespace SgLib
                 HighScore = newHighScore;
                 PlayerPrefs.SetInt(HIGHSCORE, HighScore);
                 HighscoreUpdated(HighScore);
+
+                FirebaseAnalyticsManager.SendNewRecordEvent(HighScore);
             }
         }
 
-        public int UpdatePlayedGame(int amount)
+        public int GetHighScore()
         {
-            var played = PlayerPrefs.GetInt(PLAYED, 0);
-            played++;
-            PlayerPrefs.SetInt(PLAYED, played);
-
-            return played;
+            return PlayerPrefs.GetInt(HIGHSCORE, 0);
         }
     }
 }

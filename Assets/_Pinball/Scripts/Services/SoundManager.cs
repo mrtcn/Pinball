@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using Assets._Pinball.Scripts.Services;
 
 namespace SgLib
 {
@@ -191,6 +191,8 @@ namespace SgLib
             }
 
             SetMute(mute);
+
+            FirebaseAnalyticsManager.SendMuteEvent(mute);
         }
 
         /// <summary>
