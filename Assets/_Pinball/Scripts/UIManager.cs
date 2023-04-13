@@ -202,9 +202,9 @@ public class UIManager : MonoBehaviour
 
     public void ShareScreenshot()
     {
-        #if EASY_MOBILE
+#if EASY_MOBILE
         ScreenshotSharer.Instance.ShareScreenshot();
-        #endif
+#endif
     }
 
     public void ToggleSound()

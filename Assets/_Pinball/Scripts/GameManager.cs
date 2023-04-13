@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 using SgLib;
 using System.Collections.Generic;
+using Assets._Pinball.Scripts.Services;
+using Assets._Pinball.Scripts.Models;
 
 public enum GameState
 {
@@ -13,9 +15,20 @@ public enum GameState
     GameOver
 }
 
+public enum LastSignificantGameState 
+{
+    GameOver,
+    TargetReceived,
+    ExtraBallReceived,
+    ExtraLifeReceived,
+    BallLost,
+    TargetMissed,
+    ExtraBallMissed,
+    ExtraLifeMissed,
+}
+
 public class GameManager : MonoBehaviour
 {
-
     public static int GameCount
     { 
         get { return _gameCount; } 
@@ -43,6 +56,8 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    private FixedSizeConcurrentQueue<LastSignificantGameState> LastSignificantGameStates = new FixedSizeConcurrentQueue<LastSignificantGameState>(10);
 
     private GameState _gameState = GameState.Prepare;
     private Coroutine _tempSkillCoroutine;
@@ -95,7 +110,6 @@ public class GameManager : MonoBehaviour
     private SpriteRenderer leftFlipperSpriteRenderer;
     private SpriteRenderer rightFlipperSpriteRenderer;
     private int obstacleCounter = 0;
-    private bool stopProcessing;
 
     private void OnEnable()
     {
@@ -138,6 +152,7 @@ public class GameManager : MonoBehaviour
         if (listBall.Count == 0)
         {
             LifeLost();
+            LastSignificantGameStates.Enqueue(LastSignificantGameState.BallLost);
         }
     }
 
@@ -268,21 +283,12 @@ public class GameManager : MonoBehaviour
         Vector2 pos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
         currentTarget = Instantiate(targetPrefab, pos, Quaternion.identity) as GameObject;
         StartCoroutine("Processing");
-
-        ////Enable extraBall, create extraball at that position and start processing
-        //GameObject extraBallPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
-        //extraBallPoint.SetActive(true);
-        //currentTemporarySkillPoint = extraBallPoint;
-        //Vector2 extraBallPos = Camera.main.ScreenToWorldPoint(currentTemporarySkillPoint.transform.position);
-        //currentTemporarySkill = Instantiate(extraBallPrefab, extraBallPos, Quaternion.identity) as GameObject;
-
-
-        //StartCoroutine("TemporarySkillProcessing"); 
     }
 
     void GameOver()
     {
         GameState = GameState.GameOver;
+        LastSignificantGameStates.Enqueue(LastSignificantGameState.GameOver);
     }
 
     void AddTorque(Rigidbody2D rigid, float force)
@@ -321,6 +327,8 @@ public class GameManager : MonoBehaviour
             Vector2 goldPos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
             currentTarget = Instantiate(targetPrefab, goldPos, Quaternion.identity) as GameObject;
             StartCoroutine("Processing");
+
+            LastSignificantGameStates.Enqueue(LastSignificantGameState.TargetReceived);
         }
     }
 
@@ -345,6 +353,11 @@ public class GameManager : MonoBehaviour
             Vector2 temporarySkillPos = Camera.main.ScreenToWorldPoint(currentTemporarySkillPoint.transform.position);
             currentTemporarySkill = Instantiate(temporarySkillPrefab, temporarySkillPos, Quaternion.identity) as GameObject;
             _tempSkillCoroutine = StartCoroutine(TemporarySkillProcessing());
+
+            if (temporarySkillPrefab.tag.Contains("ExtraLife"))
+                LastSignificantGameStates.Enqueue(LastSignificantGameState.ExtraLifeReceived);
+            else if (temporarySkillPrefab.tag.Contains("ExtraBall"))
+                LastSignificantGameStates.Enqueue(LastSignificantGameState.ExtraBallReceived);
         }
     }
 
@@ -408,7 +421,6 @@ public class GameManager : MonoBehaviour
         if (!gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.gameOver);
-            gameOver = true;
             for (int i = 0; i < listBall.Count; i++)
             {
                 listBall[i].GetComponent<BallController>().Exploring();
@@ -418,6 +430,8 @@ public class GameManager : MonoBehaviour
             PlayTemporarySkillParticle();
             StartGame();
             CreateBall();
+
+            LastSignificantGameStates.Enqueue(LastSignificantGameState.TargetMissed);
         }
     }
 
@@ -437,7 +451,26 @@ public class GameManager : MonoBehaviour
 
         if (!gameOver)
         {
+            var skillName = currentTemporarySkill != null ? currentTemporarySkill.name : "";
             PlayTemporarySkillParticle();
+            if (skillName.Contains("ExtraBall"))
+                LastSignificantGameStates.Enqueue(LastSignificantGameState.ExtraBallMissed);
+            else if(skillName.Contains("ExtraLife"))
+                LastSignificantGameStates.Enqueue(LastSignificantGameState.ExtraLifeMissed);
         }
+    }
+    void OnApplicationQuit()
+    {
+        var highScore = ScoreManager.Instance.GetHighScore();
+        var played = Utilities.Instance.PlayedGameAmount();
+        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Quit,  highScore, played, LastSignificantGameStates));
+
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        var highScore = ScoreManager.Instance.GetHighScore();
+        var played = Utilities.Instance.PlayedGameAmount();
+        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Pause, highScore, played, LastSignificantGameStates));
     }
 }

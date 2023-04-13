@@ -18,12 +18,17 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
+
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize((InitializationStatus initStatus) =>
         {
             // This callback is called once the MobileAds SDK is initialized.
             adManager.LoadInterstitialAd();
         });
+    }
+
+    private void Update()
+    {
     }
 
     private void OnDestroy()
@@ -62,10 +67,11 @@ public class Health : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth - dropAmount, 0, startingHealth);
 
-        if(currentHealth < 1) 
+        if(currentHealth < 1)
         {
+            //GAME OVER
             NoLifeLeft();
-            var played = ScoreManager.Instance.UpdatePlayedGame(1);
+            var played = Utilities.Instance.UpdatePlayedGame(1);
             if(played % playedToShowAd == 0)
                 adManager.ShowAd();
         }
