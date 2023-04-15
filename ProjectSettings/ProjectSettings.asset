@@ -244,7 +244,7 @@ PlayerSettings:
   clonedFromGUID: c8746f1c087024629a86baf2ff4b8b8d
   templatePackageId: 
   templateDefaultScene: 
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 0
   useCustomLauncherGradleManifest: 0
