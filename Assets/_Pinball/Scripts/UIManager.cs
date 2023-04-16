@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
@@ -69,8 +69,11 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     async void Update()
     {
-        pnToken.text = await FirebaseMessaging.GetTokenAsync();
-        GUIUtility.systemCopyBuffer = pnToken.text;
+	if(pnToken != null)
+	{
+        	pnToken.text = await FirebaseMessaging.GetTokenAsync();
+        	GUIUtility.systemCopyBuffer = pnToken.text;
+	}
         score.text = ScoreManager.Instance.Score.ToString();
         bestScore.text = ScoreManager.Instance.HighScore.ToString();
         UpdateMuteButtons();
