@@ -16,12 +16,12 @@ namespace Assets._Pinball.Scripts.Services
 
         public static void SendNewRecordEvent(int record)
         {
-            FirebaseAnalytics.LogEvent("highscore", "score", record);
+            FirebaseAnalytics.LogEvent("highscore", "score", record.ToString());
         }
 
         public static void SendPlayedAmountEvent(int played)
         {
-            FirebaseAnalytics.LogEvent("played_amount", "played", played);
+            FirebaseAnalytics.LogEvent("played_amount", "played", played.ToString());
         }
 
         public static void SendApplicationQuitInfoEvent(ApplicationQuitInfo applicationQuitInfo)
