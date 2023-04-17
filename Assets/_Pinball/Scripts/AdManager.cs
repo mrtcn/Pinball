@@ -78,6 +78,7 @@ public class AdManager : MonoBehaviour
     /// </summary>
     public void Destroy()
     {
-        interstitialAd.Destroy();
+        if(interstitialAd != null)
+            interstitialAd.Destroy();
     }
 }

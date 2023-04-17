@@ -17,7 +17,6 @@ public class UIManager : MonoBehaviour
     public Text score;
     public Text scoreInScoreBg;
     public Text bestScore;
-    public Text pnToken;
     public GameObject buttons;
     public Button muteBtn;
     public Button unMuteBtn;
@@ -67,13 +66,8 @@ public class UIManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    async void Update()
+    void Update()
     {
-	if(pnToken != null)
-	{
-        	pnToken.text = await FirebaseMessaging.GetTokenAsync();
-        	GUIUtility.systemCopyBuffer = pnToken.text;
-	}
         score.text = ScoreManager.Instance.Score.ToString();
         bestScore.text = ScoreManager.Instance.HighScore.ToString();
         UpdateMuteButtons();

@@ -33,7 +33,8 @@ public class Health : MonoBehaviour
 
     private void OnDestroy()
     {
-        adManager.Destroy();
+        if(adManager != null)
+            adManager.Destroy();
     }
 
     private void OnEnable()
