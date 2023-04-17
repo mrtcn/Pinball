@@ -7,29 +7,39 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:666313038695:ios:3ef2ff1f7d29b71b086dc2",
+        "mobilesdk_app_id": "1:666313038695:android:d537febad1875db6086dc2",
         "android_client_info": {
           "package_name": "com.Duto.PinballCrush"
         }
       },
+      "oauth_client": [
+        {
+          "client_id": "666313038695-ejo9bdq4bffg92up9po303oomcmgp0mn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCPLwsFAakvlu4JVfxNelxplupfesIe4rw"
+          "current_key": "AIzaSyCoqDtzNR1QY4rbm6Y6gEVF_3Je4rBkKyA"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666313038695-ejo9bdq4bffg92up9po303oomcmgp0mn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666313038695-mb0jr6dv4ep7hjbvo6rslov2tpprlb07.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.Duto.PinballCrush"
+              }
+            }
+          ]
         }
-      },
-      "oauth_client": [
-        {
-          "client_id": "666313038695-mb0jr6dv4ep7hjbvo6rslov2tpprlb07.apps.googleusercontent.com"
-        }
-      ]
+      }
     }
   ],
   "configuration_version": "1"

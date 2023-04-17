@@ -9,21 +9,37 @@ public class CrashlyticsInit : MonoBehaviour
     void Start()
     {
         // Initialize Firebase
+
+
+        UnityEngine.Debug.Log("Firebase starting");
+        Firebase.Crashlytics.Crashlytics.Log("Firebase starting");
+
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
-                // Create and hold a reference to your FirebaseApp,
-                // where app is a Firebase.FirebaseApp property of your application class.
-                // Crashlytics will use the DefaultInstance, as well;
-                // this ensures that Crashlytics is initialized.
-                Firebase.FirebaseApp app = Firebase.FirebaseApp.DefaultInstance;
+                try
+                {
+                    // Create and hold a reference to your FirebaseApp,
+                    // where app is a Firebase.FirebaseApp property of your application class.
+                    // Crashlytics will use the DefaultInstance, as well;
+                    // this ensures that Crashlytics is initialized.
 
-                // When this property is set to true, Crashlytics will report all
-                // uncaught exceptions as fatal events. This is the recommended behavior.
-                Crashlytics.ReportUncaughtExceptionsAsFatal = true;
+                    Firebase.FirebaseApp app = Firebase.FirebaseApp.DefaultInstance;
 
-                // Set a flag here for indicating that your project is ready to use Firebase.
+                    // When this property is set to true, Crashlytics will report all
+                    // uncaught exceptions as fatal events. This is the recommended behavior.
+                    Crashlytics.ReportUncaughtExceptionsAsFatal = true;
+
+                    // Set a flag here for indicating that your project is ready to use Firebase.
+                }
+                catch (System.Exception ex)
+                {
+                    UnityEngine.Debug.LogError(System.String.Format("Firebase failed initializing: {0}", ex.Message));
+                    Firebase.Crashlytics.Crashlytics.LogException(ex);
+                    throw;
+                }
+
             }
             else
             {

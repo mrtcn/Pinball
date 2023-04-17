@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using SgLib;
+using Firebase.Messaging;
 
 #if EASY_MOBILE
 using EasyMobile;

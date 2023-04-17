@@ -136,7 +136,7 @@ PlayerSettings:
     Others: 1
   bundleVersion: 1.0
   preloadedAssets:
-  - {fileID: 8334334522705622311, guid: 8d8c52f80bf367f4093701b96153a736, type: 2}
+  - {fileID: -7570087112078383302, guid: 8d8c52f80bf367f4093701b96153a736, type: 2}
   - {fileID: 11400000, guid: a242edaa03c989f488461a0813d9fe91, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -231,12 +231,12 @@ PlayerSettings:
   metalAPIValidation: 1
   iOSRenderExtraFrameOnPause: 1
   iosCopyPluginsCodeInsteadOfSymlink: 0
-  appleDeveloperTeamID: 
-  iOSManualSigningProvisioningProfileID: 
+  appleDeveloperTeamID: 2XVY757H8C
+  iOSManualSigningProvisioningProfileID: a8bc54c9-6513-4e0f-b611-f6cba1a2ba14
   tvOSManualSigningProvisioningProfileID: 
-  iOSManualSigningProvisioningProfileType: 0
+  iOSManualSigningProvisioningProfileType: 1
   tvOSManualSigningProvisioningProfileType: 0
-  appleEnableAutomaticSigning: 0
+  appleEnableAutomaticSigning: 2
   iOSRequireARKit: 0
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
@@ -244,7 +244,7 @@ PlayerSettings:
   clonedFromGUID: c8746f1c087024629a86baf2ff4b8b8d
   templatePackageId: 
   templateDefaultScene: 
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 0
   useCustomLauncherGradleManifest: 0

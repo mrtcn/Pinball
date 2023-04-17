@@ -6,12 +6,12 @@ public class AppInfo : MonoBehaviour
     public static AppInfo Instance;
 
     // App-specific metadata
-    public string APP_NAME = "[YOUR_APP_NAME]";
+    public string APP_NAME = "Pinball Crush";
 
     public string APPSTORE_ID = "[YOUR_APPSTORE_ID";
     // App Store id
 
-    public string BUNDLE_ID = "[YOUR_BUNDLE_ID]";
+    public string BUNDLE_ID = "com.Duto.PinballCrush";
     // app bundle id
 
     [HideInInspector]

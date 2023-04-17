@@ -133,11 +133,11 @@ Library: lib_burst_generated64
 --output=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/StaticLibraries/lib_burst_generated64
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/UnityEngine.UI.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.AdaptivePerformance.dll
+--root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.VisualScripting.Flow.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.Mathematics.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.VisualScripting.State.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.VisualScripting.Core.dll
---root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.Burst.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.2D.Animation.Runtime.dll
 --root-assembly=/Users/muratcantuna/Documents/Pinball/Temp/StagingArea/Data/Managed/Unity.TextMeshPro.dll
