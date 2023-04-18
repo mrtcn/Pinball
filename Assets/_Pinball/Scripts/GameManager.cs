@@ -92,7 +92,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Gameplay Config")]
     public Color[] backgroundColor;
-    public float torqueForce;
     public int scoreToIncreaseDifficulty = 10;
     public float targetAliveTime = 20;
     public float targetAliveTimeDecreaseValue = 2;
@@ -102,13 +101,9 @@ public class GameManager : MonoBehaviour
     public int scoreToAddTemporarySkill = 1;
 
     private List<GameObject> listBall = new List<GameObject>();
-    private Rigidbody2D leftFlipperRigid;
-    private Rigidbody2D rightFlipperRigid;
     private SpriteRenderer ushapeSpriteRenderer;
     private SpriteRenderer backgroundSpriteRenderer;
     private SpriteRenderer fenceSpriteRenderer;
-    private SpriteRenderer leftFlipperSpriteRenderer;
-    private SpriteRenderer rightFlipperSpriteRenderer;
     private int obstacleCounter = 0;
 
     private void OnEnable()
@@ -189,6 +184,7 @@ public class GameManager : MonoBehaviour
 
     private void DestroyTarget()
     {
+        StopCoroutine("Processing");
         currentTargetPoint.SetActive(false);
         ParticleSystem particle = Instantiate(hitGold, currentTarget.transform.position, Quaternion.identity) as ParticleSystem;
         var main = particle.main;
@@ -206,21 +202,15 @@ public class GameManager : MonoBehaviour
         ScoreManager.Instance.Reset();
         currentTargetPoint = null;
         currentTemporarySkillPoint = null;
-        leftFlipperRigid = leftFlipper.GetComponent<Rigidbody2D>();
-        rightFlipperRigid = rightFlipper.GetComponent<Rigidbody2D>();
         ushapeSpriteRenderer = ushape.GetComponent<SpriteRenderer>();
         backgroundSpriteRenderer = background.GetComponent<SpriteRenderer>();
         fenceSpriteRenderer = fence.GetComponent<SpriteRenderer>();
-        leftFlipperSpriteRenderer = leftFlipper.GetComponent<SpriteRenderer>();
-        rightFlipperSpriteRenderer = rightFlipper.GetComponent<SpriteRenderer>();
 
         //Change color of backgorund, ushape, fence, flippers
         Color color = backgroundColor[Random.Range(0, backgroundColor.Length)];
         ushapeSpriteRenderer.color = color;
         backgroundSpriteRenderer.color = color; 
         fenceSpriteRenderer.color = color;
-        leftFlipperSpriteRenderer.color = color;
-        rightFlipperSpriteRenderer.color = color;
 
         if (!UIManager.firstLoad)
         {
@@ -232,41 +222,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameOver && !UIManager.firstLoad)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                SoundManager.Instance.PlaySound(SoundManager.Instance.flipping);
-                Vector3 mouseInput = Input.mousePosition;
-                //Flipping right
-                if (mouseInput.x >= Screen.width / 2f)
-                {
-                    AddTorque(rightFlipperRigid, -torqueForce);
-                }
 
-                //Flipping left
-                if (mouseInput.x < Screen.width / 2f)
-                {
-                    AddTorque(leftFlipperRigid, torqueForce);
-                }
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                Vector3 mouseHolding = Input.mousePosition;
-
-                //Holding right
-                if (mouseHolding.x >= Screen.width / 2f)
-                {
-                    AddTorque(rightFlipperRigid, -torqueForce);
-                }
-
-                //Holdding left
-                if (mouseHolding.x < Screen.width / 2f)
-                {
-                    AddTorque(leftFlipperRigid, torqueForce);
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -289,11 +245,6 @@ public class GameManager : MonoBehaviour
     {
         GameState = GameState.GameOver;
         LastSignificantGameStates.Enqueue(LastSignificantGameState.GameOver);
-    }
-
-    void AddTorque(Rigidbody2D rigid, float force)
-    {
-        rigid.AddTorque(force);
     }
 
     /// <summary>
@@ -373,8 +324,6 @@ public class GameManager : MonoBehaviour
             ushapeSpriteRenderer.color = color;
             backgroundSpriteRenderer.color = color;
             fenceSpriteRenderer.color = color;
-            leftFlipperSpriteRenderer.color = color;
-            rightFlipperSpriteRenderer.color = color;
 
             //Enable obstacles
             if (obstacleCounter < obstacleManager.transform.childCount)
@@ -420,17 +369,16 @@ public class GameManager : MonoBehaviour
 
         if (!gameOver)
         {
-            SoundManager.Instance.PlaySound(SoundManager.Instance.gameOver);
+
+            //Cleanup removed balls
+            listBall.RemoveAll(x => x == null);
+
             for (int i = 0; i < listBall.Count; i++)
             {
-                listBall[i].GetComponent<BallController>().Exploring();
+                var ball = listBall[i];
+                ball.GetComponent<BallController>().Exploring();
+                LoseBall(ball);
             }
-
-            DestroyTarget();
-            PlayTemporarySkillParticle();
-            StartGame();
-            CreateBall();
-
             LastSignificantGameStates.Enqueue(LastSignificantGameState.TargetMissed);
         }
     }
