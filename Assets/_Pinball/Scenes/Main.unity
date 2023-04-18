@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 53921995}
   - component: {fileID: 53921997}
   - component: {fileID: 53921996}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 119652934}
   - component: {fileID: 119652936}
   - component: {fileID: 119652935}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 131245506}
   - component: {fileID: 131245508}
   - component: {fileID: 131245507}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 165047411}
   - component: {fileID: 165047413}
   - component: {fileID: 165047412}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 166550157}
   - component: {fileID: 166550159}
   - component: {fileID: 166550158}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TemporarySkillPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,7 +649,7 @@ GameObject:
   - component: {fileID: 178962401}
   - component: {fileID: 178962403}
   - component: {fileID: 178962402}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -725,7 +725,7 @@ GameObject:
   - component: {fileID: 208116653}
   - component: {fileID: 208116655}
   - component: {fileID: 208116654}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -888,9 +888,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213948174}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.03}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 946630702}
@@ -899,7 +899,7 @@ RectTransform:
   - {fileID: 690892705}
   - {fileID: 1985133926}
   m_Father: {fileID: 1703569872}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -948,7 +948,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &236668902
 GameObject:
@@ -961,7 +961,7 @@ GameObject:
   - component: {fileID: 236668903}
   - component: {fileID: 236668905}
   - component: {fileID: 236668904}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1056,6 +1056,8 @@ Transform:
   m_Children:
   - {fileID: 1494086593}
   - {fileID: 1957575235}
+  - {fileID: 1034515197}
+  - {fileID: 1125331754}
   - {fileID: 942752340}
   - {fileID: 1583732955}
   m_Father: {fileID: 0}
@@ -1300,7 +1302,7 @@ GameObject:
   - component: {fileID: 286276793}
   - component: {fileID: 286276795}
   - component: {fileID: 286276794}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1376,7 +1378,7 @@ GameObject:
   - component: {fileID: 323190025}
   - component: {fileID: 323190027}
   - component: {fileID: 323190026}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1452,7 +1454,7 @@ GameObject:
   - component: {fileID: 329024409}
   - component: {fileID: 329024411}
   - component: {fileID: 329024410}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1528,7 +1530,7 @@ GameObject:
   - component: {fileID: 355100165}
   - component: {fileID: 355100167}
   - component: {fileID: 355100166}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1680,7 +1682,7 @@ GameObject:
   - component: {fileID: 395881777}
   - component: {fileID: 395881779}
   - component: {fileID: 395881778}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TemporarySkillPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1754,7 +1756,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4694676315999100, guid: ab54125d815ca4db29c63185004398ea, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4694676315999100, guid: ab54125d815ca4db29c63185004398ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1797,7 +1799,7 @@ GameObject:
   - component: {fileID: 413857283}
   - component: {fileID: 413857285}
   - component: {fileID: 413857284}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1904,7 +1906,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &470476130
 PrefabInstance:
@@ -1992,7 +1994,7 @@ GameObject:
   - component: {fileID: 490133488}
   - component: {fileID: 490133490}
   - component: {fileID: 490133489}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2068,7 +2070,7 @@ GameObject:
   - component: {fileID: 494668272}
   - component: {fileID: 494668274}
   - component: {fileID: 494668273}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2467,7 +2469,7 @@ GameObject:
   - component: {fileID: 561759376}
   - component: {fileID: 561759378}
   - component: {fileID: 561759377}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2710,7 +2712,7 @@ GameObject:
   - component: {fileID: 575454379}
   - component: {fileID: 575454381}
   - component: {fileID: 575454380}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2798,7 +2800,7 @@ GameObject:
   - component: {fileID: 612449203}
   - component: {fileID: 612449205}
   - component: {fileID: 612449204}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TemporarySkillPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2886,9 +2888,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619644332}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.03}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1389008405}
@@ -2899,7 +2901,7 @@ RectTransform:
   - {fileID: 1568776790}
   - {fileID: 166550157}
   m_Father: {fileID: 1703569872}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3084,7 +3086,7 @@ GameObject:
   - component: {fileID: 643398074}
   - component: {fileID: 643398076}
   - component: {fileID: 643398075}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3236,7 +3238,7 @@ GameObject:
   - component: {fileID: 661869519}
   - component: {fileID: 661869521}
   - component: {fileID: 661869520}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3571,13 +3573,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711824819}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.03}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1703569872}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3658,7 +3660,7 @@ GameObject:
   - component: {fileID: 716153615}
   - component: {fileID: 716153617}
   - component: {fileID: 716153616}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3734,7 +3736,7 @@ GameObject:
   - component: {fileID: 774498757}
   - component: {fileID: 774498759}
   - component: {fileID: 774498758}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3810,7 +3812,7 @@ GameObject:
   - component: {fileID: 783067872}
   - component: {fileID: 783067874}
   - component: {fileID: 783067873}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3962,7 +3964,7 @@ GameObject:
   - component: {fileID: 866374871}
   - component: {fileID: 866374873}
   - component: {fileID: 866374872}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4038,7 +4040,7 @@ GameObject:
   - component: {fileID: 884913505}
   - component: {fileID: 884913507}
   - component: {fileID: 884913506}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4114,7 +4116,7 @@ GameObject:
   - component: {fileID: 894029828}
   - component: {fileID: 894029830}
   - component: {fileID: 894029829}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4326,7 +4328,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 238922792}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &944643446
 GameObject:
@@ -4339,7 +4341,7 @@ GameObject:
   - component: {fileID: 944643447}
   - component: {fileID: 944643449}
   - component: {fileID: 944643448}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4662,7 +4664,7 @@ GameObject:
   - component: {fileID: 1011334510}
   - component: {fileID: 1011334512}
   - component: {fileID: 1011334511}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4727,6 +4729,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011334509}
   m_CullTransparentMesh: 1
+--- !u!1 &1034515192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1034515197}
+  - component: {fileID: 1034515195}
+  - component: {fileID: 1034515196}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!222 &1034515195
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034515192}
+  m_CullTransparentMesh: 1
+--- !u!212 &1034515196
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034515192}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 42cd216be75d80848a9cb1f1590c6166, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 10.8, y: 19.2}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1034515197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034515192}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.45, y: 0.5, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 238922792}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1053750313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4736,7 +4831,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 478904, guid: 87d32f82f7fb6405d929088046ec6ecb, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 478904, guid: 87d32f82f7fb6405d929088046ec6ecb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4963,7 +5058,7 @@ RectTransform:
   m_Children:
   - {fileID: 1537794679}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4978,7 +5073,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1125331748}
+  - component: {fileID: 1125331754}
   - component: {fileID: 1125331750}
   - component: {fileID: 1125331752}
   - component: {fileID: 1125331753}
@@ -4989,26 +5084,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1125331748
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1125331747}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1703569872}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 1920}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1125331750
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5589,6 +5664,21 @@ PolygonCollider2D:
       - {x: 5.3599997, y: -8.08}
       - {x: 5.37, y: -8.07}
       - {x: 5.37, y: -6.95}
+--- !u!4 &1125331754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125331747}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.45, y: 0.5, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 238922792}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1129237867
 GameObject:
   m_ObjectHideFlags: 0
@@ -5600,7 +5690,7 @@ GameObject:
   - component: {fileID: 1129237868}
   - component: {fileID: 1129237870}
   - component: {fileID: 1129237869}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5676,7 +5766,7 @@ GameObject:
   - component: {fileID: 1132201171}
   - component: {fileID: 1132201173}
   - component: {fileID: 1132201172}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5898,7 +5988,7 @@ GameObject:
   - component: {fileID: 1146359688}
   - component: {fileID: 1146359690}
   - component: {fileID: 1146359689}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5974,7 +6064,7 @@ GameObject:
   - component: {fileID: 1160079821}
   - component: {fileID: 1160079823}
   - component: {fileID: 1160079822}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6130,7 +6220,7 @@ GameObject:
   - component: {fileID: 1204561436}
   - component: {fileID: 1204561438}
   - component: {fileID: 1204561437}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6206,7 +6296,7 @@ GameObject:
   - component: {fileID: 1243645216}
   - component: {fileID: 1243645218}
   - component: {fileID: 1243645217}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6282,7 +6372,7 @@ GameObject:
   - component: {fileID: 1319043886}
   - component: {fileID: 1319043888}
   - component: {fileID: 1319043887}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6420,7 +6510,7 @@ GameObject:
   - component: {fileID: 1385684918}
   - component: {fileID: 1385684920}
   - component: {fileID: 1385684919}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6496,7 +6586,7 @@ GameObject:
   - component: {fileID: 1389008405}
   - component: {fileID: 1389008407}
   - component: {fileID: 1389008406}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TemporarySkillPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6637,7 +6727,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1403842712}
+  - component: {fileID: 1403842715}
   - component: {fileID: 1403842711}
   - component: {fileID: 1403842710}
   - component: {fileID: 1403842714}
@@ -6738,7 +6828,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 40e12670ff144a643b8d4192fa50c92b, type: 3}
   m_Color: {r: 0.6313726, g: 0.35686275, b: 0.35686275, a: 1}
   m_FlipX: 0
@@ -6750,21 +6840,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &1403842712
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403842709}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 190.7, y: -777.1, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1703569872}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!233 &1403842713
 HingeJoint2D:
   m_ObjectHideFlags: 0
@@ -6780,7 +6855,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: -0.22, y: 0}
-  m_ConnectedAnchor: {x: 944.93335, y: 443.8667}
+  m_ConnectedAnchor: {x: 0.47399998, y: -4.14}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -6810,6 +6885,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!224 &1403842715
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403842709}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.584, y: -4.14}
+  m_SizeDelta: {x: 150, y: 50}
+  m_Pivot: {x: 0.95, y: 0.5}
 --- !u!1 &1412244171
 GameObject:
   m_ObjectHideFlags: 0
@@ -6821,7 +6916,7 @@ GameObject:
   - component: {fileID: 1412244172}
   - component: {fileID: 1412244174}
   - component: {fileID: 1412244173}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6973,7 +7068,7 @@ GameObject:
   - component: {fileID: 1430542935}
   - component: {fileID: 1430542937}
   - component: {fileID: 1430542936}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7061,9 +7156,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433456456}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.03}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 286276793}
@@ -7119,7 +7214,7 @@ RectTransform:
   - {fileID: 490133488}
   - {fileID: 783067872}
   m_Father: {fileID: 1703569872}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7569,7 +7664,7 @@ GameObject:
   - component: {fileID: 1568776790}
   - component: {fileID: 1568776792}
   - component: {fileID: 1568776791}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TemporarySkillPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7664,7 +7759,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 238922792}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1583732956
 SpriteRenderer:
@@ -7729,7 +7824,7 @@ GameObject:
   - component: {fileID: 1591404459}
   - component: {fileID: 1591404461}
   - component: {fileID: 1591404460}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7805,7 +7900,7 @@ GameObject:
   - component: {fileID: 1600302335}
   - component: {fileID: 1600302337}
   - component: {fileID: 1600302336}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7881,7 +7976,7 @@ GameObject:
   - component: {fileID: 1617009251}
   - component: {fileID: 1617009253}
   - component: {fileID: 1617009252}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7957,7 +8052,7 @@ GameObject:
   - component: {fileID: 1648537217}
   - component: {fileID: 1648537219}
   - component: {fileID: 1648537218}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8281,14 +8376,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1848151677}
   - {fileID: 1433456457}
   - {fileID: 619644333}
   - {fileID: 213948175}
   - {fileID: 711824820}
-  - {fileID: 1403842712}
-  - {fileID: 2052558109}
-  - {fileID: 1125331748}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8350,7 +8441,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1098885176}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -8372,7 +8463,7 @@ GameObject:
   - component: {fileID: 1713863853}
   - component: {fileID: 1713863855}
   - component: {fileID: 1713863854}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8615,7 +8706,7 @@ GameObject:
   - component: {fileID: 1728715217}
   - component: {fileID: 1728715219}
   - component: {fileID: 1728715218}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8767,7 +8858,7 @@ GameObject:
   - component: {fileID: 1741881934}
   - component: {fileID: 1741881936}
   - component: {fileID: 1741881935}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8843,7 +8934,7 @@ GameObject:
   - component: {fileID: 1757548880}
   - component: {fileID: 1757548882}
   - component: {fileID: 1757548881}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9117,84 +9208,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1848151676
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1848151677}
-  - component: {fileID: 1848151679}
-  - component: {fileID: 1848151680}
-  m_Layer: 0
-  m_Name: Background
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1848151677
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848151676}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1703569872}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 1920}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &1848151679
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848151676}
-  m_CullTransparentMesh: 1
---- !u!114 &1848151680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848151676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 42cd216be75d80848a9cb1f1590c6166, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1860608261
 GameObject:
   m_ObjectHideFlags: 0
@@ -9206,7 +9221,7 @@ GameObject:
   - component: {fileID: 1860608262}
   - component: {fileID: 1860608264}
   - component: {fileID: 1860608263}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9282,7 +9297,7 @@ GameObject:
   - component: {fileID: 1869148229}
   - component: {fileID: 1869148231}
   - component: {fileID: 1869148230}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9358,7 +9373,7 @@ GameObject:
   - component: {fileID: 1888695294}
   - component: {fileID: 1888695296}
   - component: {fileID: 1888695295}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9434,7 +9449,7 @@ GameObject:
   - component: {fileID: 1930795753}
   - component: {fileID: 1930795755}
   - component: {fileID: 1930795754}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9541,7 +9556,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1957575233
 GameObject:
@@ -9741,7 +9756,7 @@ GameObject:
   - component: {fileID: 1958915190}
   - component: {fileID: 1958915192}
   - component: {fileID: 1958915191}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TemporarySkillPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9958,7 +9973,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 404290, guid: 9706668162b33434a9d826a03bed9868, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 404290, guid: 9706668162b33434a9d826a03bed9868, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10617,7 +10632,7 @@ GameObject:
   - component: {fileID: 2048955605}
   - component: {fileID: 2048955607}
   - component: {fileID: 2048955606}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TemporarySkillPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10690,7 +10705,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2052558109}
+  - component: {fileID: 2052558113}
   - component: {fileID: 2052558108}
   - component: {fileID: 2052558110}
   - component: {fileID: 2052558112}
@@ -10716,8 +10731,8 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0.22, y: 0.01}
-  m_ConnectedAnchor: {x: 374.66666, y: 373.33334}
+  m_Anchor: {x: 0.22, y: 0}
+  m_ConnectedAnchor: {x: -1.036, y: -4.158}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -10766,7 +10781,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: bee725e3e6f46604f8f9c4e73fba971a, type: 3}
   m_Color: {r: 0.6313726, g: 0.35686275, b: 0.35686275, a: 1}
   m_FlipX: 0
@@ -10778,21 +10793,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &2052558109
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2052558106}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -281, y: -831, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1703569872}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &2052558110
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -10868,6 +10868,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!224 &2052558113
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052558106}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.146, y: -4.158}
+  m_SizeDelta: {x: 150, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2057103269
 GameObject:
   m_ObjectHideFlags: 0
@@ -10879,7 +10899,7 @@ GameObject:
   - component: {fileID: 2057103270}
   - component: {fileID: 2057103272}
   - component: {fileID: 2057103271}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10955,7 +10975,7 @@ GameObject:
   - component: {fileID: 2064628225}
   - component: {fileID: 2064628227}
   - component: {fileID: 2064628226}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11029,7 +11049,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 453646, guid: 393e1012855d44eb08111c95269092e0, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 453646, guid: 393e1012855d44eb08111c95269092e0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11072,7 +11092,7 @@ GameObject:
   - component: {fileID: 2072442525}
   - component: {fileID: 2072442527}
   - component: {fileID: 2072442526}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11180,7 +11200,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 423842, guid: fa2aa775d925b4ceaaa126f0ea5c0f18, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 423842, guid: fa2aa775d925b4ceaaa126f0ea5c0f18, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11223,7 +11243,7 @@ GameObject:
   - component: {fileID: 2140085115}
   - component: {fileID: 2140085117}
   - component: {fileID: 2140085116}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
