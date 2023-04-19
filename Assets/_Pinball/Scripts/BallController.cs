@@ -16,7 +16,7 @@ public class BallController : MonoBehaviour
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         gameObject.SetActive(false);
         spriteRenderer = GetComponent<SpriteRenderer>();
-        transform.position += (Random.value >= 0.5f) ? (new Vector3(0.2f, 0)) : (new Vector3(-0.2f, 0));
+        //transform.position += (Random.value >= 0.5f) ? (new Vector3(0.2f, 0)) : (new Vector3(-0.2f, 0));
         gameObject.SetActive(true);
     }
 
