@@ -70,30 +70,24 @@ public class TouchListener : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
-            int tapCount = Input.touchCount;
+            touchPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            hit = Physics2D.OverlapPoint(touchPoint, hotspot);
 
-            for (var i = 0; i < tapCount; i++)
+            if (hit != null)
             {
-                touchPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
-                hit = Physics2D.OverlapPoint(touchPoint, hotspot);
-
-                if (hit != null)
+                if (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Stationary)
                 {
-                    Debug.Log(Input.GetTouch(i).phase);
-                    if (Input.GetTouch(i).phase == TouchPhase.Began || Input.GetTouch(i).phase == TouchPhase.Stationary)
+                    switch (hit.name)
                     {
-                        switch (hit.name)
-                        {
-                            case "touchRgt":
-                                flipRightScript.isTouched = true;
-                                break;
-                            case "touchLeft":
-                                flipLeftScript.isTouched = true;
-                                break;
-                            case "touchLaunch":
-                                launchScript.isTouched = true;
-                                break;
-                        }
+                        case "touchRgt":
+                            flipRightScript.isTouched = true;
+                            break;
+                        case "touchLeft":
+                            flipLeftScript.isTouched = true;
+                            break;
+                        case "touchLaunch":
+                            launchScript.isTouched = true;
+                            break;
                     }
                 }
             }

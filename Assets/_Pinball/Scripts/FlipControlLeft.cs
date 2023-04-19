@@ -48,6 +48,7 @@ public class FlipControlLeft : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            SoundManager.Instance.PlaySound(SoundManager.Instance.flipping);
             isKeyPress = true;
         }
         if (Input.GetMouseButton(0))
@@ -61,9 +62,7 @@ public class FlipControlLeft : MonoBehaviour
         // on press keyboard or touch Screen
         if (isKeyPress == true && isTouched == false || isKeyPress == false && isTouched == true)
         {
-            SoundManager.Instance.PlaySound(SoundManager.Instance.flipping);
             AddTorque(leftFlipperRigid, torqueForce);
-            isTouched = false;
         }
         else
         {

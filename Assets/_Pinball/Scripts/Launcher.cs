@@ -153,7 +153,7 @@ public class Launcher : MonoBehaviour
         if (pressTime != 0)
         {
             // retract the springJoint distance and reduce the power
-            springJoint.distance = .8f;
+            //springJoint.distance = .8f;
             rb.AddForce(Vector3.down * 400);
         }
     }
