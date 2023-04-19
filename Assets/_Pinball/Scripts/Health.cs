@@ -6,7 +6,6 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public static event Action NoLifeLeft = delegate { };
-    public static event Action LifeLost = delegate { };
 
     [SerializeField]
     private float startingHealth;
@@ -75,10 +74,6 @@ public class Health : MonoBehaviour
             var played = Utilities.Instance.UpdatePlayedGame(1);
             if(played % playedToShowAd == 0)
                 adManager.ShowAd();
-        }
-        else
-        {
-            LifeLost();
         }
     }
 

@@ -5,6 +5,8 @@ using SgLib;
 using System.Collections.Generic;
 using Assets._Pinball.Scripts.Services;
 using Assets._Pinball.Scripts.Models;
+using System.Security.Cryptography;
+using System.Linq;
 
 public enum GameState
 {
@@ -109,14 +111,12 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         Health.NoLifeLeft += OutOfLife;
-        Health.LifeLost += LoseLife;
         BallController.BallLost += LoseBall;
     }
 
     private void OnDisable()
     {
         Health.NoLifeLeft -= OutOfLife;
-        Health.LifeLost -= LoseLife;
         BallController.BallLost -= LoseBall;
     }
 
@@ -139,13 +139,14 @@ public class GameManager : MonoBehaviour
     }
 
     private void LoseBall(GameObject ball)
-    {        
+    {
         //remove the ball from the list
         listBall.Remove(ball);
 
         //No ball left -> game over
         if (listBall.Count == 0)
         {
+            LoseLife();
             LifeLost();
             LastSignificantGameStates.Enqueue(LastSignificantGameState.BallLost);
         }
@@ -222,7 +223,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     /// <summary>
@@ -369,13 +369,13 @@ public class GameManager : MonoBehaviour
 
         if (!gameOver)
         {
-
             //Cleanup removed balls
             listBall.RemoveAll(x => x == null);
+            var count = listBall.Count;
 
-            for (int i = 0; i < listBall.Count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var ball = listBall[i];
+                var ball = listBall[listBall.Count -1];
                 ball.GetComponent<BallController>().Exploring();
                 LoseBall(ball);
             }
