@@ -13,6 +13,7 @@
     <package>com.google.firebase:firebase-messaging:23.1.2</package>
     <package>com.google.firebase:firebase-messaging-unity:10.7.0</package>
     <package>com.google.flatbuffers:flatbuffers-java:1.12.0</package>
+    <package>com.google.games:gpgs-plugin-support:0.11.01</package>
   </packages>
   <files>
     <file>Assets/Plugins/Android/androidx.annotation.annotation-1.5.0.jar</file>
@@ -64,12 +65,15 @@
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-base-18.2.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-basement-18.1.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-cloud-messaging-17.0.1.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-drive-17.0.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-games-v2-17.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-21.2.1.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-api-21.2.1.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-base-21.2.1.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-impl-21.2.1.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-sdk-21.2.1.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-sdk-api-21.2.1.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-nearby-18.0.2.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-stats-17.0.2.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-tasks-18.0.2.aar</file>
     <file>Assets/Plugins/Android/com.google.android.ump.user-messaging-platform-2.0.0.aar</file>
@@ -95,6 +99,7 @@
     <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-23.1.2.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-unity-10.7.0.aar</file>
     <file>Assets/Plugins/Android/com.google.flatbuffers.flatbuffers-java-1.12.0.jar</file>
+    <file>Assets/Plugins/Android/com.google.games.gpgs-plugin-support-0.11.01.aar</file>
     <file>Assets/Plugins/Android/com.google.guava.listenablefuture-1.0.jar</file>
     <file>Assets/Plugins/Android/javax.inject.javax.inject-1.jar</file>
     <file>Assets/Plugins/Android/org.jetbrains.annotations-13.0.jar</file>
@@ -102,7 +107,7 @@
     <file>Assets/Plugins/Android/org.jetbrains.kotlin.kotlin-stdlib-common-1.7.10.jar</file>
   </files>
   <settings>
-    <setting name="androidAbis" value="armeabi-v7a" />
+    <setting name="androidAbis" value="arm64-v8a" />
     <setting name="bundleId" value="com.Duto.PinballCrush" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />

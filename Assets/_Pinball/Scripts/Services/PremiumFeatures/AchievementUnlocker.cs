@@ -22,17 +22,17 @@ namespace SgLib
         [Header("List of achievements to unlock")]
         public ScoreAchievement[] achievements;
 
-        #if EASY_MOBILE
+#if EASY_MOBILE
         public static AchievementUnlocker Instance { get; private set; }
 
         void OnEnable()
         {
-            ScoreManager.ScoreUpdated += OnScoreUpdated;
+            ScoreManager.Instance.ScoreUpdated += OnScoreUpdated;
         }
 
         void OnDisable()
         {
-            ScoreManager.ScoreUpdated -= OnScoreUpdated;
+            ScoreManager.Instance.ScoreUpdated -= OnScoreUpdated;
         }
 
         void Awake()
@@ -71,6 +71,6 @@ namespace SgLib
                 GameServices.UnlockAchievement(acmName);
         }
 
-        #endif
+#endif
     }
 }

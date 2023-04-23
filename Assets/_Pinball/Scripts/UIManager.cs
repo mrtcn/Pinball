@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using SgLib;
-using Firebase.Messaging;
+using Assets._Pinball.Scripts.Services;
 
 #if EASY_MOBILE
 using EasyMobile;
@@ -34,12 +34,12 @@ public class UIManager : MonoBehaviour
 
     void OnEnable()
     {
-        ScoreManager.ScoreUpdated += OnScoreUpdated;
+        ScoreManager.Instance.ScoreUpdated += OnScoreUpdated;
     }
 
     void OnDisable()
     {
-        ScoreManager.ScoreUpdated -= OnScoreUpdated;
+        ScoreManager.Instance.ScoreUpdated -= OnScoreUpdated;
     }
 
     // Use this for initialization
@@ -151,22 +151,23 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void ShowLeaderboardUI()
+    public async void ShowLeaderboardUI()
     {
-        #if EASY_MOBILE
-        if (GameServices.IsInitialized())
-        {
-            GameServices.ShowLeaderboardUI();
-        }
-        else
-        {
-        #if UNITY_IOS
-            NativeUI.Alert("Service Unavailable", "The user is not logged in to Game Center.");
-        #elif UNITY_ANDROID
-            GameServices.Init();
-        #endif
-        }
-        #endif
+        await LeaderboardService.Instance.LoadLeaderboard();
+//#if EASY_MOBILE
+//        if (GameServices.IsInitialized())
+//        {
+//            GameServices.ShowLeaderboardUI();
+//        }
+//        else
+//        {
+//#if UNITY_IOS
+//            NativeUI.Alert("Service Unavailable", "The user is not logged in to Game Center.");
+//#elif UNITY_ANDROID
+//            GameServices.Init();
+//#endif
+//        }
+//#endif
     }
 
     public void ShowAchievementUI()
@@ -215,7 +216,9 @@ public class UIManager : MonoBehaviour
 
     public void RateApp()
     {
-        Utilities.Instance.RateApp();
+        GooglePlayGamesScript.Instance.Activate();
+        GooglePlayGamesScript.Instance.LoginGooglePlayGames();
+        //Utilities.Instance.RateApp();
     }
 
     public void OpenTwitterPage()
