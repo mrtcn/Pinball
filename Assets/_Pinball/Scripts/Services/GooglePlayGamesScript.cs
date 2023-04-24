@@ -10,16 +10,13 @@ public class GooglePlayGamesScript : MonoBehaviour
     public static GooglePlayGamesScript Instance;
     public string Error;
     public Action OnUserLoggedIn = delegate { };
-
+    private void Start()
+    {
+        PlayGamesPlatform.Activate();
+    }
     private void Awake()
     {
         Instance = this;
-    }
-
-    public void Activate()
-    {
-        //Initialize PlayGamesPlatform
-        PlayGamesPlatform.Activate();
     }
 
     public void LoginGooglePlayGames()

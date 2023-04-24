@@ -68,7 +68,8 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        score.text = ScoreManager.Instance.Score.ToString();
+        if(score != null)
+            score.text = ScoreManager.Instance.Score.ToString();
         bestScore.text = ScoreManager.Instance.HighScore.ToString();
         UpdateMuteButtons();
         if (gameManager.gameOver && !hasCheckedGameOver)
@@ -216,7 +217,6 @@ public class UIManager : MonoBehaviour
 
     public void RateApp()
     {
-        GooglePlayGamesScript.Instance.Activate();
         GooglePlayGamesScript.Instance.LoginGooglePlayGames();
         //Utilities.Instance.RateApp();
     }
