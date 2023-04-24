@@ -230,4 +230,9 @@ public class UIManager : MonoBehaviour
     {
         Utilities.Instance.OpenFacebookPage();
     }
+
+    public void OpenProfilePage()
+    {
+        ProfileService.Instance.Open();
+    }
 }

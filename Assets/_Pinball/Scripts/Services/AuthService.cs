@@ -1,4 +1,6 @@
+using Assets._Pinball.Scripts.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -34,6 +36,11 @@ public class AuthService : MonoBehaviour
         Instance = this;
     }
 
+    public bool IsAuthenticated
+    {
+        get { return AuthenticationService.Instance.PlayerInfo.Identities.Any(); }
+        private set { }
+    }
 
     async Task SignInAnonymouslyAsync()
     {
@@ -85,5 +92,13 @@ public class AuthService : MonoBehaviour
         {
             Debug.Log("Player session could not be refreshed and expired.");
         };
+    }
+
+    public async Task<User> GetUserAsync()
+    {
+        if (!IsAuthenticated)
+            return new User(AuthenticationService.Instance.PlayerId, "Anonymous");
+        
+        return new User(AuthenticationService.Instance.PlayerId, AuthenticationService.Instance.Profile);
     }
 }

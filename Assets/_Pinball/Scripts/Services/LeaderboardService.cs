@@ -8,6 +8,7 @@ using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Leaderboards;
 using Unity.Services.Leaderboards.Exceptions;
+using Unity.Services.Leaderboards.Models;
 using UnityEngine;
 
 namespace Assets._Pinball.Scripts.Services
@@ -36,7 +37,7 @@ namespace Assets._Pinball.Scripts.Services
             if (AuthenticationService.Instance.IsAuthorized 
                 && !AuthenticationService.Instance.IsExpired 
                 && AuthenticationService.Instance.IsSignedIn
-                && AuthenticationService.Instance.PlayerInfo.Identities.Any())
+                && AuthService.Instance.IsAuthenticated)
                 await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), (double)playerStats.HighScore);
         }
 
@@ -92,6 +93,22 @@ namespace Assets._Pinball.Scripts.Services
                     Crashlytics.LogException(ex);
                 }
             }
+        }
+
+        public async Task<LeaderboardEntry> GetScore()
+        {
+            try
+            {
+                return await LeaderboardsService.Instance.GetPlayerScoreAsync(AppInfo.Instance.LeaderboardId);
+            }
+            catch (LeaderboardsException ex)
+            {
+                if(ex.ErrorCode == 27009)
+                {
+                    return null;
+                }
+                throw;
+            }            
         }
     }
 }
