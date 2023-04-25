@@ -2,7 +2,6 @@
 using Firebase.Crashlytics;
 using SgLib;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Services.Authentication;
@@ -25,7 +24,7 @@ namespace Assets._Pinball.Scripts.Services
 
         private void Start()
         {
-            GooglePlayGamesScript.Instance.OnUserLoggedIn += UserLoggedIn;
+            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += UserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated += HighScoreUpdated;
         }
 
@@ -34,16 +33,13 @@ namespace Assets._Pinball.Scripts.Services
             var playerStats = await StoreService.Instance.GetAsync<PlayerStats>(CloudSaveType.UserStats.ToString());
             if (playerStats == null) playerStats = new PlayerStats();
 
-            if (AuthenticationService.Instance.IsAuthorized 
-                && !AuthenticationService.Instance.IsExpired 
-                && AuthenticationService.Instance.IsSignedIn
-                && AuthService.Instance.IsAuthenticated)
-                await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), (double)playerStats.HighScore);
+            if (AuthService.Instance.IsAuthenticated)
+                await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), playerStats.HighScore);
         }
 
         private void OnDestroy()
         {
-            GooglePlayGamesScript.Instance.OnUserLoggedIn -= UserLoggedIn;
+            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= UserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated -= HighScoreUpdated;
         }
         void Awake()
@@ -60,7 +56,7 @@ namespace Assets._Pinball.Scripts.Services
         {
             var playerStats = await StoreService.Instance.GetAsync<PlayerStats>(CloudSaveType.UserStats.ToString());
             if (playerStats == null) playerStats = new PlayerStats();
-            await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), (double)playerStats.HighScore);
+            await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), playerStats.HighScore);
         }
 
         public async Task LoadLeaderboard()
@@ -103,6 +99,7 @@ namespace Assets._Pinball.Scripts.Services
             }
             catch (LeaderboardsException ex)
             {
+                //User has no entry
                 if(ex.ErrorCode == 27009)
                 {
                     return null;
