@@ -4,7 +4,6 @@ using SgLib;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.Services.Authentication;
 using Unity.Services.Leaderboards;
 using Unity.Services.Leaderboards.Exceptions;
 using Unity.Services.Leaderboards.Models;
@@ -21,25 +20,27 @@ namespace Assets._Pinball.Scripts.Services
         private List<TextMeshProUGUI> names;
         [SerializeField]
         private List<TextMeshProUGUI> scores;
+        private string HIGHSCORE = "HIGHSCORE";
+
+
 
         private void Start()
         {
-            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += UserLoggedIn;
+            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += GoogleUserLoggedIn;
+            FacebookScript.Instance.OnFacebookUserLogIn += FacebookUserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated += HighScoreUpdated;
         }
 
-        private async void HighScoreUpdated(int obj)
+        private async void HighScoreUpdated(int highScore)
         {
-            var playerStats = await StoreService.Instance.GetAsync<PlayerStats>(CloudSaveType.UserStats.ToString());
-            if (playerStats == null) playerStats = new PlayerStats();
-
             if (AuthService.Instance.IsAuthenticated)
-                await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), playerStats.HighScore);
+                await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), highScore);
         }
 
         private void OnDestroy()
         {
-            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= UserLoggedIn;
+            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= GoogleUserLoggedIn;
+            FacebookScript.Instance.OnFacebookUserLogIn -= FacebookUserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated -= HighScoreUpdated;
         }
         void Awake()
@@ -52,11 +53,15 @@ namespace Assets._Pinball.Scripts.Services
             scrollView.SetActive(false);
         }
 
-        private async void UserLoggedIn()
+        private async void GoogleUserLoggedIn()
         {
-            var playerStats = await StoreService.Instance.GetAsync<PlayerStats>(CloudSaveType.UserStats.ToString());
-            if (playerStats == null) playerStats = new PlayerStats();
-            await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), playerStats.HighScore);
+            var highScore = PlayerPrefs.GetInt(HIGHSCORE);
+            await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), highScore);
+        }
+        private async void FacebookUserLoggedIn(UserInfo userInfo)
+        {
+            var highScore = PlayerPrefs.GetInt(HIGHSCORE);
+            await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), highScore);
         }
 
         public async Task LoadLeaderboard()
@@ -100,7 +105,7 @@ namespace Assets._Pinball.Scripts.Services
             catch (LeaderboardsException ex)
             {
                 //User has no entry
-                if(ex.ErrorCode == 27009)
+                if(ex.ErrorCode == 27009 ||ex.ErrorCode == 51)
                 {
                     return null;
                 }
