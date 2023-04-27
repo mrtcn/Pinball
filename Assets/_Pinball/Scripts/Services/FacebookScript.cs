@@ -1,4 +1,6 @@
 using Assets._Pinball.Scripts.Models;
+using Assets._Pinball.Scripts.Models.Enums;
+using Assets._Pinball.Scripts.Services;
 using Facebook.Unity;
 using Firebase.Crashlytics;
 using System;
@@ -73,6 +75,8 @@ public class FacebookScript : MonoBehaviour
 
                 await LinkWithFacebookAsync(Token);
 
+
+                ExternalProviderStateHelper.SetLastLoginState(ExternalProviderLastLoginType.Facebook_State, ExternalProviderState.LoggedIn);
                 FB.API("/me?fields=id,name,picture", HttpMethod.GET, LoginCallback);
 
             }
@@ -169,5 +173,6 @@ public class FacebookScript : MonoBehaviour
     {
         FB.LogOut();
         OnFacebookUserLogOut();
+        ExternalProviderStateHelper.SetLastLoginState(ExternalProviderLastLoginType.Facebook_State, ExternalProviderState.LoggedOut);
     }
 }

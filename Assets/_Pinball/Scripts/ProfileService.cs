@@ -46,7 +46,8 @@ public class ProfileService : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += GoogleUserLoggedIn;
+        GooglePlayGamesScript.Instance.OnGoogleUserLogIn += UserInfoUpdated;
+        FacebookScript.Instance.OnFacebookUserLogIn += UserInfoUpdated;
         UserCacheService.Instance.OnUserInfoUpdate += UserInfoUpdated;
         AuthService.Instance.UserLoggedOut += UserLoggedOut;
         UserService.Instance.OnUsernameUpdate += UsernameUpdated;
@@ -67,15 +68,11 @@ public class ProfileService : MonoBehaviour
         Load();
     }
 
-    private void GoogleUserLoggedIn()
-    {
-        Load();
-    }
-
     // Update is called once per frame
     private void OnDestroy()
     {
-        GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= GoogleUserLoggedIn;
+        GooglePlayGamesScript.Instance.OnGoogleUserLogIn -= UserInfoUpdated;
+        FacebookScript.Instance.OnFacebookUserLogIn -= UserInfoUpdated;
         UserCacheService.Instance.OnUserInfoUpdate -= UserInfoUpdated;
         AuthService.Instance.UserLoggedOut -= UserLoggedOut;
         UserService.Instance.OnUsernameUpdate -= UsernameUpdated;
@@ -90,13 +87,8 @@ public class ProfileService : MonoBehaviour
         usernameTextField.text = userInfo.Username;
         rank.text = score.Tier.ToString();
         highscore.text = score.Score.ToString();
-        if(string.IsNullOrWhiteSpace(userInfo.ImagePath))
-            Utilities.Instance.LoadImage(placeholderImage, image);
-        else
-            StartCoroutine(Utilities.Instance.LoadImage(userInfo.ImagePath, image));
 
         var authType = AuthService.Instance.GetAuthenticationType();
-        authType = !AuthService.Instance.IsAuthenticated ? AuthenticationType.Anonymous : authType;
         switch (authType)
         {
             case AuthenticationType.Anonymous:
@@ -129,6 +121,10 @@ public class ProfileService : MonoBehaviour
                 break;
         }
 
+        if (string.IsNullOrWhiteSpace(userInfo.ImagePath))
+            Utilities.Instance.LoadImage(placeholderImage, image);
+        else
+            StartCoroutine(Utilities.Instance.LoadImage(userInfo.ImagePath, image));
     }
 
     public void Open()

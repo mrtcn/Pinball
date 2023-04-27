@@ -14,11 +14,41 @@ public class UserCacheService : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GooglePlayGamesScript.Instance.OnGoogleUserLogIn += GoogleUserLoggedIn;
+        GooglePlayGamesScript.Instance.OnGoogleUserLogOut += GoogleUserLoggedOut;
         FacebookScript.Instance.OnFacebookUserLogIn += FacebookUserLoggedIn;
         FacebookScript.Instance.OnFacebookUserLogOut += FacebookUserLoggedOut;
     }
 
+    private void GoogleUserLoggedOut()
+    {
+        RemoveExternalUserInfo();
+    }
+
+    private void GoogleUserLoggedIn(UserInfo userInfo)
+    {
+        SaveUserInfo(userInfo);
+        OnUserInfoUpdate(userInfo);
+    }
+
     private void FacebookUserLoggedOut()
+    {
+        RemoveExternalUserInfo();
+    }
+
+    private void FacebookUserLoggedIn(UserInfo userInfo)
+    {
+        SaveUserInfo(userInfo);
+        OnUserInfoUpdate(userInfo);
+    }
+
+    public void SaveUserInfo(UserInfo userInfo)
+    {
+        var json = JsonUtility.ToJson(userInfo);
+        PlayerPrefs.SetString("UserInfo", json);
+    }
+
+    private void RemoveExternalUserInfo()
     {
         var userInfo = GetUserInfo();
         userInfo.ExternalProviderId = null;
@@ -33,18 +63,8 @@ public class UserCacheService : MonoBehaviour
     {
         FacebookScript.Instance.OnFacebookUserLogIn -= FacebookUserLoggedIn;
         FacebookScript.Instance.OnFacebookUserLogOut -= FacebookUserLoggedOut;
-    }
-
-    private void FacebookUserLoggedIn(UserInfo userInfo)
-    {
-        SaveUserInfo(userInfo);
-        OnUserInfoUpdate(userInfo);
-    }
-
-    public void SaveUserInfo(UserInfo userInfo)
-    {
-        var json = JsonUtility.ToJson(userInfo);
-        PlayerPrefs.SetString("UserInfo", json);
+        GooglePlayGamesScript.Instance.OnGoogleUserLogIn -= GoogleUserLoggedIn;
+        GooglePlayGamesScript.Instance.OnGoogleUserLogOut -= GoogleUserLoggedOut;
     }
 
     public UserInfo GetUserInfo()

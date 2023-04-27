@@ -23,7 +23,6 @@ public class UserInfoSection : MonoBehaviour
     {
         UserService.Instance.OnUsernameUpdate += UsernameUpdate;
         AuthService.Instance.OnUserLoggedIn += UserLoggedIn;
-        GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += UserLoggedIn;
         UserCacheService.Instance.OnUserInfoUpdate += UserInfoUpdated;
     }
 
@@ -31,7 +30,6 @@ public class UserInfoSection : MonoBehaviour
     {
         UserService.Instance.OnUsernameUpdate -= UsernameUpdate;
         AuthService.Instance.OnUserLoggedIn -= UserLoggedIn;
-        GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= UserLoggedIn;
         UserCacheService.Instance.OnUserInfoUpdate -= UserInfoUpdated;
     }
 

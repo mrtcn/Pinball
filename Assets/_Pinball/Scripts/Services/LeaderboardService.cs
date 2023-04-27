@@ -26,7 +26,7 @@ namespace Assets._Pinball.Scripts.Services
 
         private void Start()
         {
-            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += GoogleUserLoggedIn;
+            GooglePlayGamesScript.Instance.OnGoogleUserLogIn += GoogleUserLoggedIn;
             FacebookScript.Instance.OnFacebookUserLogIn += FacebookUserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated += HighScoreUpdated;
         }
@@ -39,7 +39,7 @@ namespace Assets._Pinball.Scripts.Services
 
         private void OnDestroy()
         {
-            GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= GoogleUserLoggedIn;
+            GooglePlayGamesScript.Instance.OnGoogleUserLogIn -= GoogleUserLoggedIn;
             FacebookScript.Instance.OnFacebookUserLogIn -= FacebookUserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated -= HighScoreUpdated;
         }
@@ -53,7 +53,7 @@ namespace Assets._Pinball.Scripts.Services
             scrollView.SetActive(false);
         }
 
-        private async void GoogleUserLoggedIn()
+        private async void GoogleUserLoggedIn(UserInfo userInfo)
         {
             var highScore = PlayerPrefs.GetInt(HIGHSCORE);
             await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), highScore);
