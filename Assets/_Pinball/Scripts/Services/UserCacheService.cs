@@ -35,12 +35,6 @@ public class UserCacheService : MonoBehaviour
         FacebookScript.Instance.OnFacebookUserLogOut -= FacebookUserLoggedOut;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void FacebookUserLoggedIn(UserInfo userInfo)
     {
         SaveUserInfo(userInfo);

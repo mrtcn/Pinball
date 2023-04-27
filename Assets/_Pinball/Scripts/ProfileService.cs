@@ -49,6 +49,12 @@ public class ProfileService : MonoBehaviour
         GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += GoogleUserLoggedIn;
         UserCacheService.Instance.OnUserInfoUpdate += UserInfoUpdated;
         AuthService.Instance.UserLoggedOut += UserLoggedOut;
+        UserService.Instance.OnUsernameUpdate += UsernameUpdated;
+    }
+
+    private void UsernameUpdated()
+    {
+        Load();
     }
 
     private void UserInfoUpdated(UserInfo userInfo)
@@ -72,6 +78,7 @@ public class ProfileService : MonoBehaviour
         GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= GoogleUserLoggedIn;
         UserCacheService.Instance.OnUserInfoUpdate -= UserInfoUpdated;
         AuthService.Instance.UserLoggedOut -= UserLoggedOut;
+        UserService.Instance.OnUsernameUpdate -= UsernameUpdated;
     }
 
     public async void Load()
