@@ -1,5 +1,4 @@
 using Assets._Pinball.Scripts.Models;
-using Assets._Pinball.Scripts.Services;
 using GooglePlayGames;
 using System;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AuthService : MonoBehaviour
 {
@@ -36,6 +36,12 @@ public class AuthService : MonoBehaviour
         
     }
 
+    private async void Start()
+    {
+        if (!AuthenticationService.Instance.IsSignedIn)
+            await SignInAnonymouslyAsync();
+    }
+
     async void Awake()
     {
         Instance = this;
@@ -49,15 +55,13 @@ public class AuthService : MonoBehaviour
 
         SetupEvents();
         DebugLogs();
-
-        await SignInAnonymouslyAsync();
     }
 
     public bool IsAuthenticated
     {
         get {
             var isGoogleAuthenticated = GooglePlayGamesScript.Instance.IsAuthenticated();
-            var isFacebookAuthenticated = false;
+            var isFacebookAuthenticated = FacebookScript.Instance.IsAuthenticated();
             var isIosAuthenticated = false;
             return isGoogleAuthenticated || isFacebookAuthenticated || isIosAuthenticated; 
         }
@@ -70,7 +74,6 @@ public class AuthService : MonoBehaviour
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             
-            Debug.Log("Sign in anonymously succeeded!");
             DebugLogs();
 
         }
@@ -92,13 +95,19 @@ public class AuthService : MonoBehaviour
     void SetupEvents()
     {
         AuthenticationService.Instance.SignedIn += async () => {
+            Debug.LogError("Sign in anonymously succeeded!");
             OnUserLoggedIn();
-            if(!IsAuthenticated)
-                LoginExternal();
+            try
+            {
+                if (!IsAuthenticated)
+                    LoginExternal();
+            }
+            finally
+            {
+                if (string.IsNullOrWhiteSpace(AuthenticationService.Instance.PlayerName))
+                    UpdateNameDialog.Instance.OpenDialog(true);
+            }
             
-            // Shows how to get an access token
-            Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
-
         };
 
         AuthenticationService.Instance.SignInFailed += (err) => {
@@ -129,52 +138,17 @@ public class AuthService : MonoBehaviour
             case AuthenticationType.AppleGameCenter:
                 break;
             case AuthenticationType.Facebook:
+                FacebookScript.Instance.Login();
                 break;
             case AuthenticationType.Unknown:
                 break;
             default:
                 break;
         }
-    }
-
-    public async Task<User> GetUserAsync()
-    {
-        var score = await LeaderboardService.Instance.GetScore();
-        if (!IsAuthenticated)
-        {
-            var anonymousUsername = await AuthenticationService.Instance.GetPlayerNameAsync();
-            anonymousUsername = string.IsNullOrWhiteSpace(anonymousUsername) ? "Anonymous" : anonymousUsername;
-            return new User(AuthenticationService.Instance.PlayerId, anonymousUsername, "", (int)score.Score, score.Tier);
-        }
-            
-        var image = GetUserImage();
-        var username = string.IsNullOrWhiteSpace(Social.localUser.userName) ? "Anonymous" : Social.localUser.userName;
-        return new User(AuthenticationService.Instance.PlayerId, username, image, (int)score.Score, score.Tier);
-    }
-
-    private string GetUserImage()
-    {
-        var authType = GetAuthenticationType();
-        switch (authType)
-        {
-            case AuthenticationType.Anonymous:
-                return "";
-            case AuthenticationType.GooglePlayGames:
-                return PlayGamesPlatform.Instance.GetUserImageUrl();
-            case AuthenticationType.AppleGameCenter:
-                return "";
-            case AuthenticationType.Facebook:
-                return "";
-            case AuthenticationType.Unknown:
-                return "";
-            default:
-                return "";
-        }
-        
     }
 
     public void LogoutUser()
-    {
+    {        
         AuthenticationService.Instance.SignOut();        
     }
 

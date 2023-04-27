@@ -79,14 +79,12 @@ namespace SgLib
         public void UpdateHighScore(int newHighScore)
         {
             // Update highscore if player has made a new one
-            if (newHighScore > HighScore)
-            {
-                HighScore = newHighScore;
-                PlayerPrefs.SetInt(HIGHSCORE, HighScore);
-                OnHighscoreUpdated(HighScore);
 
-                FirebaseAnalyticsManager.SendNewRecordEvent(HighScore);
-            }
+            HighScore = newHighScore;
+            PlayerPrefs.SetInt(HIGHSCORE, HighScore);
+            OnHighscoreUpdated(HighScore);
+
+            FirebaseAnalyticsManager.SendNewRecordEvent(HighScore);
         }
 
         public int GetHighScore()

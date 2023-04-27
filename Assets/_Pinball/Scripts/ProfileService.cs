@@ -1,16 +1,13 @@
 using Assets._Pinball.Scripts.Models;
-using Firebase.Crashlytics;
+using Assets._Pinball.Scripts.Services;
 using SgLib;
 using System;
-using System.Text.RegularExpressions;
-using TMPro;
 using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ProfileService : MonoBehaviour
 {
-    public Action OnUsernameUpdate = delegate { };
     public static ProfileService Instance { get; private set; }
 
     [SerializeField]
@@ -32,7 +29,7 @@ public class ProfileService : MonoBehaviour
     [SerializeField]
     private GameObject logoutFacebook;
     [SerializeField]
-    private Text username;
+    private Text usernameTextField;
     [SerializeField]
     private Text rank;
     [SerializeField]
@@ -40,11 +37,7 @@ public class ProfileService : MonoBehaviour
     [SerializeField]
     private Image image;
     [SerializeField]
-    private GameObject usernameEditDialog;
-    [SerializeField]
-    private TMP_InputField usernameInputField;
-    [SerializeField]
-    private TextMeshProUGUI inputFieldError;
+    private Texture2D placeholderImage;
 
     private void Awake()
     {
@@ -54,10 +47,22 @@ public class ProfileService : MonoBehaviour
     void Start()
     {
         GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn += GoogleUserLoggedIn;
-        AuthService.Instance.UserLoggedOut += GoogleUserLoggedOut;
+        UserCacheService.Instance.OnUserInfoUpdate += UserInfoUpdated;
+        AuthService.Instance.UserLoggedOut += UserLoggedOut;
+        UserService.Instance.OnUsernameUpdate += UsernameUpdated;
     }
 
-    private void GoogleUserLoggedOut()
+    private void UsernameUpdated()
+    {
+        Load();
+    }
+
+    private void UserInfoUpdated(UserInfo userInfo)
+    {
+        Load();
+    }
+
+    private void UserLoggedOut()
     {
         Load();
     }
@@ -71,19 +76,24 @@ public class ProfileService : MonoBehaviour
     private void OnDestroy()
     {
         GooglePlayGamesScript.Instance.OnGoogleUserLoggedIn -= GoogleUserLoggedIn;
-        AuthService.Instance.UserLoggedOut -= GoogleUserLoggedOut;
+        UserCacheService.Instance.OnUserInfoUpdate -= UserInfoUpdated;
+        AuthService.Instance.UserLoggedOut -= UserLoggedOut;
+        UserService.Instance.OnUsernameUpdate -= UsernameUpdated;
     }
 
     public async void Load()
     {
-
-        var userInfo = await AuthService.Instance.GetUserAsync();
-        username.text = userInfo.Username;
-        usernameInputField.text = userInfo.Username;
-        rank.text = userInfo.Rank;
-        highscore.text = userInfo.HighScore.ToString();
-        StartCoroutine(Utilities.Instance.LoadImage(userInfo.ImagePath, image));
-
+        var userInfo = UserCacheService.Instance.GetUserInfo();
+        userInfo = userInfo ?? new UserInfo(null, AuthenticationService.Instance.PlayerName, null, AuthenticationType.Anonymous, null);
+        var score = await LeaderboardService.Instance.GetScore();
+        score = score ?? new Unity.Services.Leaderboards.Models.LeaderboardEntry(AuthenticationService.Instance.PlayerId, AuthenticationService.Instance.PlayerName, 0, 0, "Rookie", DateTime.Now);
+        usernameTextField.text = userInfo.Username;
+        rank.text = score.Tier.ToString();
+        highscore.text = score.Score.ToString();
+        if(string.IsNullOrWhiteSpace(userInfo.ImagePath))
+            Utilities.Instance.LoadImage(placeholderImage, image);
+        else
+            StartCoroutine(Utilities.Instance.LoadImage(userInfo.ImagePath, image));
 
         var authType = AuthService.Instance.GetAuthenticationType();
         authType = !AuthService.Instance.IsAuthenticated ? AuthenticationType.Anonymous : authType;
@@ -172,7 +182,7 @@ public class ProfileService : MonoBehaviour
 
     public void LoginFacebook()
     {
-
+        FacebookScript.Instance.Login();
     }
 
     public void LoginAppleGameCenter()
@@ -183,37 +193,5 @@ public class ProfileService : MonoBehaviour
     public void Logout()
     {
         AuthService.Instance.LogoutUser();
-    }
-
-    public async void UpdateEditDialog()
-    {
-        if(!Regex.Match(usernameInputField.text, @"^[a-zA-Z0-9]{3,32}").Success)
-        {
-            inputFieldError.text = "Please enter a valid username";
-            return;
-        }
-
-        try
-        {
-            await AuthenticationService.Instance.UpdatePlayerNameAsync(usernameInputField.text);
-        }
-        catch (Exception ex)
-        {
-            Crashlytics.LogException(ex);
-            inputFieldError.text = "An error occured during updating the username.";
-        }
-
-        username.text = usernameInputField.text;
-        inputFieldError.text = "";
-        OnUsernameUpdate();
-        usernameEditDialog.SetActive(false);
-    }
-
-    public void CloseEditDialog()
-    {
-        inputFieldError.text = "";
-        usernameInputField.text = username.text;
-        usernameEditDialog.SetActive(false);
-
     }
 }
