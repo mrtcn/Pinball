@@ -8991,9 +8991,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2025838313}
-        m_TargetAssemblyTypeName: GooglePlayGamesScript, Assembly-CSharp
-        m_MethodName: LoginGooglePlayGames
+      - m_Target: {fileID: 633479642}
+        m_TargetAssemblyTypeName: ProfileService, Assembly-CSharp
+        m_MethodName: LoginGooglePlay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9114,7 +9114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11496204, guid: 87d32f82f7fb6405d929088046ec6ecb, type: 3}
       propertyPath: clearPlayerPrefs
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87d32f82f7fb6405d929088046ec6ecb, type: 3}
@@ -15660,9 +15660,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2025838311}
-        m_TargetAssemblyTypeName: AuthService, Assembly-CSharp
-        m_MethodName: LogoutUser
+      - m_Target: {fileID: 2025838313}
+        m_TargetAssemblyTypeName: GooglePlayGamesScript, Assembly-CSharp
+        m_MethodName: Logout
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
