@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.IO;
 using UnityEngine.SceneManagement;
-using System.Text.RegularExpressions;
 using System;
 using Assets._Pinball.Scripts.Services;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace SgLib
 {
@@ -193,6 +193,33 @@ namespace SgLib
         public int PlayedGameAmount()
         {
             return PlayerPrefs.GetInt(PLAYED, 0);
+        }
+
+        /// <summary>
+        /// Load image url into image component
+        /// </summary>
+        /// <param name="MediaUrl">Image url to load</param>
+        /// <param name="image">Image component to display the image</param>
+        /// <returns></returns>
+        public IEnumerator LoadImage(string MediaUrl, Image image)
+        {
+            UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.ConnectionError)
+                Debug.Log(request.error);
+            else
+                image.canvasRenderer.SetTexture(((DownloadHandlerTexture)request.downloadHandler).texture);
+        }
+
+        /// <summary>
+        /// Load image texture into image component
+        /// </summary>
+        /// <param name="MediaUrl">Image url to load</param>
+        /// <param name="image">Image component to display the image</param>
+        /// <returns></returns>
+        public void LoadImage(Texture2D placeholderImage, Image image)
+        {
+            image.canvasRenderer.SetTexture(placeholderImage);
         }
     }
 }

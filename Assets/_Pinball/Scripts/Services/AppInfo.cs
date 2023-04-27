@@ -8,26 +8,32 @@ public class AppInfo : MonoBehaviour
     // App-specific metadata
     public string APP_NAME = "Pinball Crush";
 
-    public string APPSTORE_ID = "[YOUR_APPSTORE_ID";
     // App Store id
+    public string APPSTORE_ID = "[YOUR_APPSTORE_ID";
 
-    public string BUNDLE_ID = "com.Duto.PinballCrush";
     // app bundle id
+    public string BUNDLE_ID = "com.Duto.PinballCrush";
 
+    // Unity Service Leaderboard Id
+
+    [HideInInspector]
+    public string LeaderboardId = "worldleaderboard";
+    public int LeaderboardStep = 10;
+
+    // App Store link
     [HideInInspector]
     public string APPSTORE_LINK = "itms-apps://itunes.apple.com/app/id";
-    // App Store link
 
+    // Google Play store link
     [HideInInspector]
     public string PLAYSTORE_LINK = "market://details?id=";
-    // Google Play store link
 
     // Publisher links
-    public string APPSTORE_HOMEPAGE = "[YOUR_APPSTORE_PUBLISHER_LINK]";
     // e.g itms-apps://itunes.apple.com/artist/[publisher-name]/[publisher-id]
+    public string APPSTORE_HOMEPAGE = "[YOUR_APPSTORE_PUBLISHER_LINK]";
 
-    public string PLAYSTORE_HOMEPAGE = "[YOUR_GOOGLEPLAY_PUBLISHER_NAME]";
     // e.g https://play.google.com/store/apps/developer?id=[PUBLISHER_NAME]
+    public string PLAYSTORE_HOMEPAGE = "[YOUR_GOOGLEPLAY_PUBLISHER_NAME]";
 
     public string FACEBOOK_ID = "[YOUR_FACEBOOK_PAGE_ID]";
 
@@ -82,5 +88,11 @@ public class AppInfo : MonoBehaviour
         TWITTER_LINK += TWITTER_NAME;
 
         Application.targetFrameRate = targetFrameRate;
+
+#if UNITY_EDITOR
+        LeaderboardId = "test-leaderboard";
+#else
+        LeaderboardId = "worldleaderboard";
+#endif
     }
 }

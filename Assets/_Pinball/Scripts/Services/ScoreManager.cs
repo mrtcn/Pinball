@@ -14,8 +14,8 @@ namespace SgLib
 
         public bool HasNewHighScore { get; private set; }
 
-        public static event Action<int> ScoreUpdated = delegate {};
-        public static event Action<int> HighscoreUpdated = delegate {};
+        public event Action<int> ScoreUpdated = delegate {};
+        public event Action<int> OnHighscoreUpdated = delegate {};
 
         // key name to store high score in PlayerPrefs
         private const string HIGHSCORE = "HIGHSCORE";
@@ -79,14 +79,12 @@ namespace SgLib
         public void UpdateHighScore(int newHighScore)
         {
             // Update highscore if player has made a new one
-            if (newHighScore > HighScore)
-            {
-                HighScore = newHighScore;
-                PlayerPrefs.SetInt(HIGHSCORE, HighScore);
-                HighscoreUpdated(HighScore);
 
-                FirebaseAnalyticsManager.SendNewRecordEvent(HighScore);
-            }
+            HighScore = newHighScore;
+            PlayerPrefs.SetInt(HIGHSCORE, HighScore);
+            OnHighscoreUpdated(HighScore);
+
+            FirebaseAnalyticsManager.SendNewRecordEvent(HighScore);
         }
 
         public int GetHighScore()

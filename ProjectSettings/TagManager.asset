@@ -15,7 +15,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Touchhotspot
   - 
   - 
   - 
@@ -44,4 +44,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Efx
+    uniqueID: 1697603503
+    locked: 0
+  - name: Obstacle
+    uniqueID: 505233653
+    locked: 0
+  - name: Top
+    uniqueID: 333962993
+    locked: 0
+  - name: Cover
+    uniqueID: 1590824781
     locked: 0

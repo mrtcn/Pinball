@@ -3,7 +3,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using SgLib;
-using Firebase.Messaging;
+using Assets._Pinball.Scripts.Services;
+using Unity.Services.Authentication;
+using GooglePlayGames;
 
 #if EASY_MOBILE
 using EasyMobile;
@@ -32,23 +34,14 @@ public class UIManager : MonoBehaviour
     Animator scoreAnimator;
     bool hasCheckedGameOver = false;
 
-    void OnEnable()
-    {
-        ScoreManager.ScoreUpdated += OnScoreUpdated;
-    }
-
-    void OnDisable()
-    {
-        ScoreManager.ScoreUpdated -= OnScoreUpdated;
-    }
-
     // Use this for initialization
     void Start()
     {
+        ScoreManager.Instance.ScoreUpdated += OnScoreUpdated;
+
         scoreAnimator = score.GetComponent<Animator>();
         score.gameObject.SetActive(false);
         scoreInScoreBg.text = ScoreManager.Instance.Score.ToString();
-
 
         // Show or hide premium buttons
         bool enablePremium = PremiumFeaturesManager.Instance.enablePremiumFeatures;
@@ -58,7 +51,6 @@ public class UIManager : MonoBehaviour
         restorePurchaseBtn.SetActive(enablePremium);
         shareBtn.SetActive(false);  // share button only shows when game over
             
-
         if (!firstLoad)
         {
             HideAllButtons();
@@ -68,7 +60,8 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        score.text = ScoreManager.Instance.Score.ToString();
+        if(score != null)
+            score.text = ScoreManager.Instance.Score.ToString();
         bestScore.text = ScoreManager.Instance.HighScore.ToString();
         UpdateMuteButtons();
         if (gameManager.gameOver && !hasCheckedGameOver)
@@ -76,6 +69,11 @@ public class UIManager : MonoBehaviour
             hasCheckedGameOver = true;
             Invoke("ShowButtons", 1f);
         }
+    }
+
+    private void OnDestroy()
+    {
+        ScoreManager.Instance.ScoreUpdated -= OnScoreUpdated;
     }
 
     void OnScoreUpdated(int newScore)
@@ -151,22 +149,23 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void ShowLeaderboardUI()
+    public async void ShowLeaderboardUI()
     {
-        #if EASY_MOBILE
-        if (GameServices.IsInitialized())
-        {
-            GameServices.ShowLeaderboardUI();
-        }
-        else
-        {
-        #if UNITY_IOS
-            NativeUI.Alert("Service Unavailable", "The user is not logged in to Game Center.");
-        #elif UNITY_ANDROID
-            GameServices.Init();
-        #endif
-        }
-        #endif
+        await LeaderboardService.Instance.LoadLeaderboard();
+//#if EASY_MOBILE
+//        if (GameServices.IsInitialized())
+//        {
+//            GameServices.ShowLeaderboardUI();
+//        }
+//        else
+//        {
+//#if UNITY_IOS
+//            NativeUI.Alert("Service Unavailable", "The user is not logged in to Game Center.");
+//#elif UNITY_ANDROID
+//            GameServices.Init();
+//#endif
+//        }
+//#endif
     }
 
     public void ShowAchievementUI()
@@ -215,16 +214,44 @@ public class UIManager : MonoBehaviour
 
     public void RateApp()
     {
-        Utilities.Instance.RateApp();
+        GooglePlayGamesScript.Instance.LoginGooglePlayGames();
+        DebugLogs();
+        //Utilities.Instance.RateApp();
     }
 
     public void OpenTwitterPage()
     {
-        Utilities.Instance.OpenTwitterPage();
+        //Utilities.Instance.OpenTwitterPage();
     }
 
-    public void OpenFacebookPage()
+    public async void OpenFacebookPage()
     {
-        Utilities.Instance.OpenFacebookPage();
+        await AuthService.Instance.SignInAnonymouslyAsync();
+        DebugLogs();
+        //Utilities.Instance.OpenFacebookPage();
+    }
+
+    public void OpenProfilePage()
+    {
+        ProfileService.Instance.Open();
+    }
+
+
+
+    private static void DebugLogs()
+    {
+        Debug.Log($"DebugLogs UI Profile: {AuthenticationService.Instance.Profile}");
+        Debug.Log($"DebugLogs UI PlayerId: {AuthenticationService.Instance.PlayerId}");
+        Debug.Log($"DebugLogs UI IsSignedIn: {AuthenticationService.Instance.IsSignedIn}");
+        Debug.Log($"DebugLogs UI SessionTokenExists: {AuthenticationService.Instance.SessionTokenExists}");
+        Debug.Log($"DebugLogs UI IsExpired: {AuthenticationService.Instance.IsExpired}");
+        Debug.Log($"DebugLogs UI GetUserDisplayName: {PlayGamesPlatform.Instance.GetUserDisplayName()}");
+        Debug.Log($"DebugLogs UI GetUserImageUrl: {PlayGamesPlatform.Instance.GetUserImageUrl()}");
+        Debug.Log($"DebugLogs UI IsAuthenticated: {PlayGamesPlatform.Instance.IsAuthenticated()}");
+        Debug.Log($"DebugLogs UI AuthService.Instance.IsAuthenticated: {AuthService.Instance.IsAuthenticated}");
+        Debug.Log($"DebugLogs UI localUser.userName: {PlayGamesPlatform.Instance.localUser.userName}");
+        Debug.Log($"DebugLogs UI localUser.authenticated: {PlayGamesPlatform.Instance.localUser.authenticated}");
+        Debug.Log($"DebugLogs UI localUser.state: {PlayGamesPlatform.Instance.localUser.state}");
+        Debug.Log($"DebugLogs UI Identities: {AuthenticationService.Instance.PlayerInfo?.Identities?.Count}");
     }
 }
