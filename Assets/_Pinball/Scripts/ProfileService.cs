@@ -48,6 +48,7 @@ public class ProfileService : MonoBehaviour
     {
         GooglePlayGamesScript.Instance.OnGoogleUserLogIn += UserInfoUpdated;
         FacebookScript.Instance.OnFacebookUserLogIn += UserInfoUpdated;
+        AppleSignInScript.Instance.OnAppleUserLogIn += UserInfoUpdated;
         UserCacheService.Instance.OnUserInfoUpdate += UserInfoUpdated;
         AuthService.Instance.UserLoggedOut += UserLoggedOut;
         UserService.Instance.OnUsernameUpdate += UsernameUpdated;
@@ -73,6 +74,7 @@ public class ProfileService : MonoBehaviour
     {
         GooglePlayGamesScript.Instance.OnGoogleUserLogIn -= UserInfoUpdated;
         FacebookScript.Instance.OnFacebookUserLogIn -= UserInfoUpdated;
+        AppleSignInScript.Instance.OnAppleUserLogIn -= UserInfoUpdated;
         UserCacheService.Instance.OnUserInfoUpdate -= UserInfoUpdated;
         AuthService.Instance.UserLoggedOut -= UserLoggedOut;
         UserService.Instance.OnUsernameUpdate -= UsernameUpdated;
@@ -183,7 +185,7 @@ public class ProfileService : MonoBehaviour
 
     public void LoginAppleGameCenter()
     {
-
+        AppleSignInScript.Instance.SignIn();
     }
 
     public void Logout()

@@ -8508,9 +8508,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2025838311}
-        m_TargetAssemblyTypeName: AuthService, Assembly-CSharp
-        m_MethodName: LogoutUser
+      - m_Target: {fileID: 2025838315}
+        m_TargetAssemblyTypeName: AppleSignInScript, Assembly-CSharp
+        m_MethodName: Logout
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14910,7 +14910,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1632438425}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 633479642}
+        m_TargetAssemblyTypeName: ProfileService, Assembly-CSharp
+        m_MethodName: LoginAppleGameCenter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 579086135}
+        m_TargetAssemblyTypeName: SgLib.Utilities, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1632438425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18998,6 +19022,7 @@ GameObject:
   - component: {fileID: 2025838311}
   - component: {fileID: 2025838313}
   - component: {fileID: 2025838314}
+  - component: {fileID: 2025838315}
   m_Layer: 0
   m_Name: Authentication
   m_TagString: Untagged
@@ -19059,6 +19084,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Token: 
   Error: 
+--- !u!114 &2025838315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025838310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 205b77105ff874516811dc90b5415ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2035670262
 GameObject:
   m_ObjectHideFlags: 0

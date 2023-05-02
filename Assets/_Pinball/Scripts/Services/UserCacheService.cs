@@ -18,6 +18,8 @@ public class UserCacheService : MonoBehaviour
         GooglePlayGamesScript.Instance.OnGoogleUserLogOut += GoogleUserLoggedOut;
         FacebookScript.Instance.OnFacebookUserLogIn += FacebookUserLoggedIn;
         FacebookScript.Instance.OnFacebookUserLogOut += FacebookUserLoggedOut;
+        AppleSignInScript.Instance.OnAppleUserLogIn += AppleUserLoggedIn;
+        AppleSignInScript.Instance.OnAppleUserLogOut += AppleUserLoggedOut;
     }
 
     private void GoogleUserLoggedOut()
@@ -42,10 +44,43 @@ public class UserCacheService : MonoBehaviour
         OnUserInfoUpdate(userInfo);
     }
 
+    private void AppleUserLoggedOut()
+    {
+        RemoveExternalUserInfo();
+    }
+
+    private void AppleUserLoggedIn(UserInfo userInfo)
+    {
+        SaveUserInfo(userInfo);
+        OnUserInfoUpdate(userInfo);
+    }
+
+
     public void SaveUserInfo(UserInfo userInfo)
     {
         var json = JsonUtility.ToJson(userInfo);
         PlayerPrefs.SetString("UserInfo", json);
+    }
+
+    public bool GenerateAnonymousIfNotExists(UserInfo userInfo)
+    {
+        var oldUserInfo = GetUserInfo();
+        if (oldUserInfo != null)
+            return false;
+        var json = JsonUtility.ToJson(userInfo);
+        PlayerPrefs.SetString("UserInfo", json);
+        return true;
+    }
+
+    public bool UpdateUsernameIfExists(string username)
+    {
+        var userInfo = GetUserInfo();
+        if (userInfo == null)
+            return false;
+        userInfo.Username = username;
+        var json = JsonUtility.ToJson(userInfo);
+        PlayerPrefs.SetString("UserInfo", json);
+        return true;
     }
 
     private void RemoveExternalUserInfo()
@@ -65,6 +100,8 @@ public class UserCacheService : MonoBehaviour
         FacebookScript.Instance.OnFacebookUserLogOut -= FacebookUserLoggedOut;
         GooglePlayGamesScript.Instance.OnGoogleUserLogIn -= GoogleUserLoggedIn;
         GooglePlayGamesScript.Instance.OnGoogleUserLogOut -= GoogleUserLoggedOut;
+        AppleSignInScript.Instance.OnAppleUserLogIn -= AppleUserLoggedIn;
+        AppleSignInScript.Instance.OnAppleUserLogOut -= AppleUserLoggedOut;
     }
 
     public UserInfo GetUserInfo()

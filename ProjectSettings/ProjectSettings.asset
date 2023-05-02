@@ -54,7 +54,7 @@ PlayerSettings:
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
-  iosUseCustomAppBackgroundBehavior: 0
+  iosUseCustomAppBackgroundBehavior: 1
   iosAllowHTTPDownload: 1
   allowedAutorotateToPortrait: 1
   allowedAutorotateToPortraitUpsideDown: 1
@@ -136,7 +136,7 @@ PlayerSettings:
     Others: 1
   bundleVersion: 0.1.1
   preloadedAssets:
-  - {fileID: 8334334522705622311, guid: 8d8c52f80bf367f4093701b96153a736, type: 2}
+  - {fileID: -7570087112078383302, guid: 8d8c52f80bf367f4093701b96153a736, type: 2}
   - {fileID: 11400000, guid: a242edaa03c989f488461a0813d9fe91, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -225,14 +225,14 @@ PlayerSettings:
   iOSDeviceRequirements: []
   iOSURLSchemes: []
   macOSURLSchemes: []
-  iOSBackgroundModes: 0
+  iOSBackgroundModes: 256
   iOSMetalForceHardShadows: 0
   metalEditorSupport: 0
   metalAPIValidation: 1
   iOSRenderExtraFrameOnPause: 1
   iosCopyPluginsCodeInsteadOfSymlink: 0
   appleDeveloperTeamID: 2XVY757H8C
-  iOSManualSigningProvisioningProfileID: a8bc54c9-6513-4e0f-b611-f6cba1a2ba14
+  iOSManualSigningProvisioningProfileID: 44c1fff1-b1f8-436f-b903-318edc6696de
   tvOSManualSigningProvisioningProfileID: 
   iOSManualSigningProvisioningProfileType: 1
   tvOSManualSigningProvisioningProfileType: 0
@@ -549,7 +549,7 @@ PlayerSettings:
   actionOnDotNetUnhandledException: 1
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
-  enableCrashReportAPI: 0
+  enableCrashReportAPI: 1
   cameraUsageDescription: 
   locationUsageDescription: 
   microphoneUsageDescription: 
