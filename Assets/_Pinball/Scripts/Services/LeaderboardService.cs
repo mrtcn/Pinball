@@ -1,6 +1,7 @@
 ﻿using Assets._Pinball.Scripts.Models;
 using Firebase.Crashlytics;
 using SgLib;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
@@ -27,6 +28,7 @@ namespace Assets._Pinball.Scripts.Services
         private void Start()
         {
             GooglePlayGamesScript.Instance.OnGoogleUserLogIn += GoogleUserLoggedIn;
+            AppleSignInScript.Instance.OnAppleUserLogIn += AppleUserLoggedIn;
             FacebookScript.Instance.OnFacebookUserLogIn += FacebookUserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated += HighScoreUpdated;
         }
@@ -40,6 +42,7 @@ namespace Assets._Pinball.Scripts.Services
         private void OnDestroy()
         {
             GooglePlayGamesScript.Instance.OnGoogleUserLogIn -= GoogleUserLoggedIn;
+            AppleSignInScript.Instance.OnAppleUserLogIn -= AppleUserLoggedIn;
             FacebookScript.Instance.OnFacebookUserLogIn -= FacebookUserLoggedIn;
             ScoreManager.Instance.OnHighscoreUpdated -= HighScoreUpdated;
         }
@@ -51,6 +54,12 @@ namespace Assets._Pinball.Scripts.Services
         public void Close()
         {
             scrollView.SetActive(false);
+        }
+
+        private async void AppleUserLoggedIn(UserInfo userInfo)
+        {
+            var highScore = PlayerPrefs.GetInt(HIGHSCORE);
+            await LeaderboardsService.Instance.AddPlayerScoreAsync(AppInfo.Instance.LeaderboardId.ToLower(), highScore);
         }
 
         private async void GoogleUserLoggedIn(UserInfo userInfo)
@@ -72,12 +81,13 @@ namespace Assets._Pinball.Scripts.Services
 
                 var options = new GetPlayerRangeOptions();
                 options.RangeLimit = AppInfo.Instance.LeaderboardStep;
-
+                Crashlytics.Log($"LeaderboardId: {AppInfo.Instance.LeaderboardId.ToLower()} - LeaderboardStep: {AppInfo.Instance.LeaderboardStep}");
                 var leaderboard = await LeaderboardsService.Instance.GetPlayerRangeAsync(AppInfo.Instance.LeaderboardId.ToLower(), options);
-
-                for (var i = 0; i < leaderboard.Results.Count; i++)
+                var leaderboardItems = leaderboard.Results;
+                for (var i = 0; i < leaderboardItems?.Count; i++)
                 {
-                    var result = leaderboard.Results[i];
+                    if (i + 1 > AppInfo.Instance.LeaderboardStep) break;
+                    var result = leaderboardItems[i];
                     names[i].text = result.PlayerName;
                     scores[i].text = result.Score.ToString();
                 }
@@ -93,6 +103,11 @@ namespace Assets._Pinball.Scripts.Services
                     ToastMessageScript.Instance.showToast("Leaderboard cannot be loaded at the moment. Please login if you are not logged in and try again.", 3);
                     Crashlytics.LogException(ex);
                 }
+            }
+            catch(Exception ex)
+            {
+                Crashlytics.LogException(ex);
+                ToastMessageScript.Instance.showToast("An error occured during loading the leaderboard. Please try again later.", 3);
             }
         }
 

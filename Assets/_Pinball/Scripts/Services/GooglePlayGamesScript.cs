@@ -1,8 +1,10 @@
 using Assets._Pinball.Scripts.Models;
 using Assets._Pinball.Scripts.Models.Enums;
 using Assets._Pinball.Scripts.Services;
+#if UNITY_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+#endif
 using System;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
@@ -17,7 +19,9 @@ public class GooglePlayGamesScript : MonoBehaviour
     public string Error;
     private void Start()
     {
+#if UNITY_ANDROID
         Activate();
+#endif
     }
     private void Awake()
     {
@@ -26,6 +30,7 @@ public class GooglePlayGamesScript : MonoBehaviour
 
     public void Activate()
     {
+#if UNITY_ANDROID
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             // enables saving game progress.
             .EnableSavedGames()
@@ -44,10 +49,13 @@ public class GooglePlayGamesScript : MonoBehaviour
         PlayGamesPlatform.DebugLogEnabled = true;
         // Activate the Google Play Games platform
         PlayGamesPlatform.Activate();
+#endif
     }
 
     public void LoginGooglePlayGames(bool silent = false)
     {
+
+#if UNITY_ANDROID
         PlayGamesPlatform.Instance.Authenticate(async (success) =>
         {
             if (success)
@@ -83,6 +91,7 @@ public class GooglePlayGamesScript : MonoBehaviour
                 Debug.Log("Login Unsuccessful");
             }
         }, silent);
+#endif
     }
 
     public async Task Link(string code)
@@ -102,14 +111,22 @@ public class GooglePlayGamesScript : MonoBehaviour
 
     public bool IsAuthenticated()
     {
+
+#if UNITY_ANDROID
         return PlayGamesPlatform.Instance.IsAuthenticated();
+#else
+        return false;
+#endif
     }
 
     public void Logout()
     {
+
+#if UNITY_ANDROID
         PlayGamesPlatform.Instance.SignOut();
         ExternalProviderStateHelper.SetLastLoginState(ExternalProviderLastLoginType.Google_State, ExternalProviderState.LoggedOut);
         OnGoogleUserLogOut();
+#endif
     }
 
 }

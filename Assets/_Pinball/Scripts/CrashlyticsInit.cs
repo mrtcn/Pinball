@@ -32,6 +32,9 @@ public class CrashlyticsInit : MonoBehaviour
                     Crashlytics.ReportUncaughtExceptionsAsFatal = true;
 
                     // Set a flag here for indicating that your project is ready to use Firebase.
+
+                    Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
+                    Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
                 }
                 catch (System.Exception ex)
                 {
@@ -50,9 +53,13 @@ public class CrashlyticsInit : MonoBehaviour
         });
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
     {
+        UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
+    }
 
+    public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+    {
+        UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
     }
 }
