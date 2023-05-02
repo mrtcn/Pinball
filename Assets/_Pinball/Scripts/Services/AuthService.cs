@@ -1,7 +1,6 @@
 using Assets._Pinball.Scripts.Models;
 using Assets._Pinball.Scripts.Models.Enums;
 using Assets._Pinball.Scripts.Services;
-using GooglePlayGames;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ public class AuthService : MonoBehaviour
 {
     public static AuthService Instance { get; private set; }
     public Action UserLoggedOut = delegate { };
-    public Action OnUserLoggedIn = delegate { };
+    public Action OnUserLoggedIn = delegate { };    
 
     private static void DebugLogs()
     {
@@ -23,21 +22,23 @@ public class AuthService : MonoBehaviour
         Debug.Log($"DebugLogs IsSignedIn: {AuthenticationService.Instance.IsSignedIn}");
         Debug.Log($"DebugLogs SessionTokenExists: {AuthenticationService.Instance.SessionTokenExists}");
         Debug.Log($"DebugLogs IsExpired: {AuthenticationService.Instance.IsExpired}");
-        Debug.Log($"DebugLogs GetUserDisplayName: {PlayGamesPlatform.Instance.GetUserDisplayName()}");
-        Debug.Log($"DebugLogs GetUserImageUrl: {PlayGamesPlatform.Instance.GetUserImageUrl()}");
-        Debug.Log($"DebugLogs IsAuthenticated: {PlayGamesPlatform.Instance.IsAuthenticated()}");
         Debug.Log($"DebugLogs AuthService.Instance.IsAuthenticated: {AuthService.Instance.IsAuthenticated}");
-        Debug.Log($"DebugLogs localUser.userName: {PlayGamesPlatform.Instance.localUser.userName}");
-        Debug.Log($"DebugLogs localUser.authenticated: {PlayGamesPlatform.Instance.localUser.authenticated}");
-        Debug.Log($"DebugLogs localUser.state: {PlayGamesPlatform.Instance.localUser.state}");
         Debug.Log($"DebugLogs IdentitiesCount: {AuthenticationService.Instance.PlayerInfo?.Identities?.Count}");
-        if(AuthenticationService.Instance.PlayerInfo?.Identities?.Count > 0)
+        if (AuthenticationService.Instance.PlayerInfo?.Identities?.Count > 0)
         {
-            foreach( var identity in AuthenticationService.Instance.PlayerInfo?.Identities)
+            foreach (var identity in AuthenticationService.Instance.PlayerInfo?.Identities)
             {
                 Debug.Log($"DebugLogs Identities: {identity.UserId} - {identity.TypeId}");
             }
         }
+#if UNITY_ANDROID
+        Debug.Log($"DebugLogs GetUserDisplayName: {PlayGamesPlatform.Instance.GetUserDisplayName()}");
+        Debug.Log($"DebugLogs GetUserImageUrl: {PlayGamesPlatform.Instance.GetUserImageUrl()}");
+        Debug.Log($"DebugLogs IsAuthenticated: {PlayGamesPlatform.Instance.IsAuthenticated()}");
+        Debug.Log($"DebugLogs localUser.userName: {PlayGamesPlatform.Instance.localUser.userName}");
+        Debug.Log($"DebugLogs localUser.authenticated: {PlayGamesPlatform.Instance.localUser.authenticated}");
+        Debug.Log($"DebugLogs localUser.state: {PlayGamesPlatform.Instance.localUser.state}");
+#endif
         
     }
 
@@ -45,6 +46,17 @@ public class AuthService : MonoBehaviour
     {
         if (!AuthenticationService.Instance.IsSignedIn)
             await SignInAnonymouslyAsync();
+    }
+
+    private async void AppleUserLoggedOut()
+    {
+        Debug.LogError("Apple logout processing");
+        LogoutUser();
+        Debug.LogError("Apple logout processed");
+
+        Debug.LogError("Anonymous login processing");
+        await SignInAnonymouslyAsync();
+        Debug.LogError("Anonymous login processed");
     }
 
     async void Awake()
@@ -67,7 +79,7 @@ public class AuthService : MonoBehaviour
         get {
             var isGoogleAuthenticated = GooglePlayGamesScript.Instance.IsAuthenticated();
             var isFacebookAuthenticated = FacebookScript.Instance.IsAuthenticated();
-            var isIosAuthenticated = false;
+            var isIosAuthenticated = AppleSignInScript.Instance.IsAuthenticated;
             return isGoogleAuthenticated || isFacebookAuthenticated || isIosAuthenticated; 
         }
         private set { }
@@ -79,8 +91,10 @@ public class AuthService : MonoBehaviour
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             if (!IsAuthenticated)
-                LoginExternal();
+                LoginExistingExternals();
             DebugLogs();
+            var username = await AuthenticationService.Instance.GetPlayerNameAsync();
+            UserCacheService.Instance.GenerateAnonymousIfNotExists(new UserInfo(string.Empty, username, string.Empty, AuthenticationType.Anonymous, string.Empty));
 
         }
         catch (AuthenticationException ex)
@@ -100,30 +114,60 @@ public class AuthService : MonoBehaviour
     // Setup authentication event handlers if desired
     void SetupEvents()
     {
-        AuthenticationService.Instance.SignedIn += async () => {
+        AuthenticationService.Instance.SignedIn += SignedIn();
+        AuthenticationService.Instance.SignInFailed += SignInFailed();
+        AuthenticationService.Instance.SignedOut += SignedOut();
+        AuthenticationService.Instance.Expired += TokenExpired();
+        AppleSignInScript.Instance.OnAppleUserLogOut += AppleUserLoggedOut;
+    }
+
+    private Action SignedIn()
+    {
+        return () =>
+        {
             Debug.LogError("Sign in anonymously succeeded!");
             OnUserLoggedIn();
 
             if (string.IsNullOrWhiteSpace(AuthenticationService.Instance.PlayerName))
                 UpdateNameDialog.Instance.OpenDialog(true);
         };
+    }
 
-        AuthenticationService.Instance.SignInFailed += (err) => {
-            Debug.LogError(err);
-        };
-
-        AuthenticationService.Instance.SignedOut += () => {
-            Debug.Log("Player signed out.");
-            UserLoggedOut();
-        };
-
-        AuthenticationService.Instance.Expired += () =>
+    private static Action TokenExpired()
+    {
+        return () =>
         {
             Debug.Log("Player session could not be refreshed and expired.");
         };
     }
 
-    private void LoginExternal()
+    private Action SignedOut()
+    {
+        return () =>
+        {
+            Debug.Log("Player signed out.");
+            UserLoggedOut();
+        };
+    }
+
+    private static Action<RequestFailedException> SignInFailed()
+    {
+        return (err) =>
+        {
+            Debug.LogError(err);
+        };
+    }
+
+    private void OnDestroy()
+    {
+        AuthenticationService.Instance.SignedIn -= SignedIn();
+        AuthenticationService.Instance.SignInFailed -= SignInFailed();
+        AuthenticationService.Instance.SignedOut -= SignedOut();
+        AuthenticationService.Instance.Expired -= TokenExpired();
+        AppleSignInScript.Instance.OnAppleUserLogOut -= AppleUserLoggedOut;
+    }
+
+    private void LoginExistingExternals()
     {
         var authTypes = GetAuthenticationTypes();
         foreach (var authType in authTypes) 
@@ -138,6 +182,9 @@ public class AuthService : MonoBehaviour
                         GooglePlayGamesScript.Instance.LoginGooglePlayGames(true);
                     break;
                 case AuthenticationType.AppleGameCenter:
+                    var appleLastLoginState = ExternalProviderStateHelper.LastLoginState(ExternalProviderLastLoginType.Ios_State);
+                    if (appleLastLoginState == ExternalProviderState.LoggedIn)
+                        AppleSignInScript.Instance.SignIn();
                     break;
                 case AuthenticationType.Facebook:
                     var facebookLastLoginState = ExternalProviderStateHelper.LastLoginState(ExternalProviderLastLoginType.Facebook_State);
@@ -159,27 +206,34 @@ public class AuthService : MonoBehaviour
 
     public AuthenticationType GetAuthenticationType() 
     {
+        if (AuthenticationService.Instance.PlayerInfo == null)
+            return AuthenticationType.Anonymous;
+
         var appleId = AuthenticationService.Instance.PlayerInfo.GetAppleId();
         Debug.Log($"AppleId: {appleId}");
-        if (!string.IsNullOrWhiteSpace(appleId)) return AuthenticationType.AppleGameCenter;
+        if (!string.IsNullOrWhiteSpace(appleId) && AppleSignInScript.Instance.IsAuthenticated)
+            return AuthenticationType.AppleGameCenter;
 
         var googlePlayId = Social.localUser.id;
         Debug.Log($"GooglePlayId: {googlePlayId}");
-        if (!string.IsNullOrWhiteSpace(googlePlayId) && GooglePlayGamesScript.Instance.IsAuthenticated()) return AuthenticationType.GooglePlayGames;
+        if (!string.IsNullOrWhiteSpace(googlePlayId) && GooglePlayGamesScript.Instance.IsAuthenticated())
+            return AuthenticationType.GooglePlayGames;
 
         var facebookId = AuthenticationService.Instance.PlayerInfo.GetFacebookId();
         Debug.Log($"FacebookId: {facebookId}");
-        if (!string.IsNullOrWhiteSpace(facebookId) && FacebookScript.Instance.IsAuthenticated()) return AuthenticationType.Facebook;
+        if (!string.IsNullOrWhiteSpace(facebookId) && FacebookScript.Instance.IsAuthenticated())
+            return AuthenticationType.Facebook;
 
         return AuthenticationType.Anonymous;
     }
     private List<AuthenticationType> GetAuthenticationTypes() 
     {         
         var authenticationTypes = new List<AuthenticationType>();
-        if (AuthenticationService.Instance.PlayerInfo?.Identities.Count == 0) return authenticationTypes;
+        if (AuthenticationService.Instance.PlayerInfo?.Identities?.Count == 0) return authenticationTypes;
 
         foreach (var identity in AuthenticationService.Instance.PlayerInfo?.Identities)
         {
+            if (string.IsNullOrWhiteSpace(identity.TypeId)) continue;
             if(identity.TypeId.Contains("google"))
                 authenticationTypes.Add(AuthenticationType.GooglePlayGames);
             else if (identity.TypeId.Contains("facebook"))

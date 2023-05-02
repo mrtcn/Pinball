@@ -245,13 +245,22 @@ public class UIManager : MonoBehaviour
         Debug.Log($"DebugLogs UI IsSignedIn: {AuthenticationService.Instance.IsSignedIn}");
         Debug.Log($"DebugLogs UI SessionTokenExists: {AuthenticationService.Instance.SessionTokenExists}");
         Debug.Log($"DebugLogs UI IsExpired: {AuthenticationService.Instance.IsExpired}");
+        Debug.Log($"DebugLogs UI AuthService.Instance.IsAuthenticated: {AuthService.Instance.IsAuthenticated}");
+        Debug.Log($"DebugLogs UI Identities: {AuthenticationService.Instance.PlayerInfo?.Identities?.Count}");
+        if (AuthenticationService.Instance.PlayerInfo?.Identities?.Count > 0)
+        {
+            foreach (var identity in AuthenticationService.Instance.PlayerInfo?.Identities)
+            {
+                Debug.Log($"DebugLogs Identities: {identity.UserId} - {identity.TypeId}");
+            }
+        }
+#if UNITY_ANDROID
         Debug.Log($"DebugLogs UI GetUserDisplayName: {PlayGamesPlatform.Instance.GetUserDisplayName()}");
         Debug.Log($"DebugLogs UI GetUserImageUrl: {PlayGamesPlatform.Instance.GetUserImageUrl()}");
         Debug.Log($"DebugLogs UI IsAuthenticated: {PlayGamesPlatform.Instance.IsAuthenticated()}");
-        Debug.Log($"DebugLogs UI AuthService.Instance.IsAuthenticated: {AuthService.Instance.IsAuthenticated}");
         Debug.Log($"DebugLogs UI localUser.userName: {PlayGamesPlatform.Instance.localUser.userName}");
         Debug.Log($"DebugLogs UI localUser.authenticated: {PlayGamesPlatform.Instance.localUser.authenticated}");
         Debug.Log($"DebugLogs UI localUser.state: {PlayGamesPlatform.Instance.localUser.state}");
-        Debug.Log($"DebugLogs UI Identities: {AuthenticationService.Instance.PlayerInfo?.Identities?.Count}");
+#endif
     }
 }
