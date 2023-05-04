@@ -1,6 +1,5 @@
 ﻿using Assets._Pinball.Scripts.Models;
 using Firebase.Crashlytics;
-using SgLib;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,6 +20,7 @@ namespace Assets._Pinball.Scripts.Services
         private List<TextMeshProUGUI> names;
         [SerializeField]
         private List<TextMeshProUGUI> scores;
+        private ScoreSO score;
         private string HIGHSCORE = "HIGHSCORE";
 
 
@@ -30,7 +30,8 @@ namespace Assets._Pinball.Scripts.Services
             GooglePlayGamesScript.Instance.OnGoogleUserLogIn += GoogleUserLoggedIn;
             AppleSignInScript.Instance.OnAppleUserLogIn += AppleUserLoggedIn;
             FacebookScript.Instance.OnFacebookUserLogIn += FacebookUserLoggedIn;
-            ScoreManager.Instance.OnHighscoreUpdated += HighScoreUpdated;
+            score = ScriptableObject.FindObjectOfType<ScoreSO>() ?? ScriptableObject.CreateInstance<ScoreSO>();
+            score.OnHighscoreUpdated += HighScoreUpdated;
         }
 
         private async void HighScoreUpdated(int highScore)
@@ -44,7 +45,7 @@ namespace Assets._Pinball.Scripts.Services
             GooglePlayGamesScript.Instance.OnGoogleUserLogIn -= GoogleUserLoggedIn;
             AppleSignInScript.Instance.OnAppleUserLogIn -= AppleUserLoggedIn;
             FacebookScript.Instance.OnFacebookUserLogIn -= FacebookUserLoggedIn;
-            ScoreManager.Instance.OnHighscoreUpdated -= HighScoreUpdated;
+            score.OnHighscoreUpdated -= HighScoreUpdated;
         }
         void Awake()
         {

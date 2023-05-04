@@ -3,22 +3,20 @@ using UnityEngine.UI;
 
 public class Healthbar : MonoBehaviour
 {
-    [SerializeField] private Health healthScript;
+    private HealthSO healthSO;
     [SerializeField] private Image currentHealthBar;
     [SerializeField] private Image totalHealthBar;
     // Start is called before the first frame update
     void Start()
     {
-        totalHealthBar.fillAmount = healthScript.currentHealth / 10;
-    }
+        healthSO = ScriptableObject.FindObjectOfType<HealthSO>() ?? ScriptableObject.CreateInstance<HealthSO>();
+        totalHealthBar.fillAmount = healthSO.currentHealth / 10;
 
-    private void OnEnable()
-    {
         GameManager.LifeLost += ReduceLife;
         BallController.ExtraLifeCollected += CollectExtraLife;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         GameManager.LifeLost -= ReduceLife;
         BallController.ExtraLifeCollected -= CollectExtraLife;
@@ -26,11 +24,11 @@ public class Healthbar : MonoBehaviour
 
     private void CollectExtraLife()
     {
-        currentHealthBar.fillAmount = healthScript.currentHealth / 10;
+        currentHealthBar.fillAmount = healthSO.currentHealth / 10;
     }
 
     private void ReduceLife()
     {
-        currentHealthBar.fillAmount = healthScript.currentHealth / 10;
+        currentHealthBar.fillAmount = healthSO.currentHealth / 10;
     }
 }

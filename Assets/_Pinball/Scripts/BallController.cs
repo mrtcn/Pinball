@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using SgLib;
 
 public class BallController : MonoBehaviour
 {
@@ -7,22 +6,21 @@ public class BallController : MonoBehaviour
     public static event System.Action<GameObject> BallLost = delegate { };
     public static event System.Action ExtraLifeCollected = delegate { };
 
-    private GameManager gameManager;
     private SpriteRenderer spriteRenderer;
-    private bool isChecked;
+    private ScoreSO score;
     // Use this for initialization
     void Start()
     {
-        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         gameObject.SetActive(false);
         spriteRenderer = GetComponent<SpriteRenderer>();
         //transform.position += (Random.value >= 0.5f) ? (new Vector3(0.2f, 0)) : (new Vector3(-0.2f, 0));
         gameObject.SetActive(true);
+        score = ScriptableObject.FindObjectOfType<ScoreSO>()??ScriptableObject.CreateInstance<ScoreSO>();
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Dead") && !gameManager.gameOver)
+        if (col.gameObject.CompareTag("Dead") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.eploring);
             
@@ -34,26 +32,26 @@ public class BallController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Gold") && !gameManager.gameOver)
+        if (other.CompareTag("Gold") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.hitGold);
-            ScoreManager.Instance.AddScore(1);
-            gameManager.CheckAndUpdateValue();
+            score.AddScore(1);
+            GameManager.Instance.CheckAndUpdateValue();
 
-            PlayParticle(other, gameManager.hitGold);
-            gameManager.CreateTarget();
-        } else if(other.CompareTag("ExtraBall") && !gameManager.gameOver)
+            PlayParticle(other, GameManager.Instance.hitGold);
+            GameManager.Instance.CreateTarget();
+        } else if(other.CompareTag("ExtraBall") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.rewarded);
-            PlayParticle(other, gameManager.hitTemporarySkill);
-            gameManager.PlayTemporarySkillParticle();
-            gameManager.CreateBall();
+            PlayParticle(other, GameManager.Instance.hitTemporarySkill);
+            GameManager.Instance.PlayTemporarySkillParticle();
+            GameManager.Instance.CreateBall();
         }
-        else if (other.CompareTag("ExtraLife") && !gameManager.gameOver)
+        else if (other.CompareTag("ExtraLife") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.rewarded);
-            PlayParticle(other, gameManager.hitGold);
-            gameManager.PlayTemporarySkillParticle();
+            PlayParticle(other, GameManager.Instance.hitGold);
+            GameManager.Instance.PlayTemporarySkillParticle();
             ExtraLifeCollected();
         }
     }
@@ -73,7 +71,7 @@ public class BallController : MonoBehaviour
     /// </summary>
     public void Exploring()
     {
-        ParticleSystem particle = Instantiate(gameManager.die, transform.position, Quaternion.identity) as ParticleSystem;
+        ParticleSystem particle = Instantiate(GameManager.Instance.die, transform.position, Quaternion.identity) as ParticleSystem;
         var main = particle.main;
         main.startColor = spriteRenderer.color;
         particle.Play();

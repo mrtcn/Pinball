@@ -16,32 +16,9 @@ namespace SgLib
     /// just as an actual singleton.
     /// Usage: place a Utility object attached with this script in any scene needs to use these utilities.
     /// </summary>
-    public class Utilities : MonoBehaviour
+    public class Utilities : Singleton<Utilities>
     {
         private const string PLAYED = "PLAYED";
-        public static Utilities Instance { get; private set; }
-
-        void Awake()
-        {
-            Instance = this;
-        }
-
-        void OnDestroy()
-        {
-            if (Instance == this)
-            {
-                Utilities anotherInstance = (Utilities)FindObjectOfType(typeof(Utilities));
-
-                if (anotherInstance != null)
-                {
-                    Instance = anotherInstance;
-                }
-                else
-                {
-                    Instance = null;
-                }
-            }
-        }
 
         public static IEnumerator CRWaitForRealSeconds(float time)
         {

@@ -1,6 +1,9 @@
 using Assets._Pinball.Scripts.Models;
 using Assets._Pinball.Scripts.Models.Enums;
 using Assets._Pinball.Scripts.Services;
+#if UNITY_ANDROID
+using GooglePlayGames;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

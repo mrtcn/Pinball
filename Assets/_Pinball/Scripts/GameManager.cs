@@ -5,8 +5,7 @@ using SgLib;
 using System.Collections.Generic;
 using Assets._Pinball.Scripts.Services;
 using Assets._Pinball.Scripts.Models;
-using System.Security.Cryptography;
-using System.Linq;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -29,7 +28,7 @@ public enum LastSignificantGameState
     ExtraLifeMissed,
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public static int GameCount
     { 
@@ -64,7 +63,6 @@ public class GameManager : MonoBehaviour
     private GameState _gameState = GameState.Prepare;
     private Coroutine _tempSkillCoroutine;
     [Header("Gameplay References")]
-    public UIManager uIManager;
     public GameObject ballPrefab;
     public GameObject ballPoint;
     public GameObject obstacleManager;
@@ -106,19 +104,9 @@ public class GameManager : MonoBehaviour
     private SpriteRenderer ushapeSpriteRenderer;
     private SpriteRenderer backgroundSpriteRenderer;
     private SpriteRenderer fenceSpriteRenderer;
+    private ScoreSO score;
+    private HealthSO healthSO;
     private int obstacleCounter = 0;
-
-    private void OnEnable()
-    {
-        Health.NoLifeLeft += OutOfLife;
-        BallController.BallLost += LoseBall;
-    }
-
-    private void OnDisable()
-    {
-        Health.NoLifeLeft -= OutOfLife;
-        BallController.BallLost -= LoseBall;
-    }
 
     private void LoseLife()
     {
@@ -136,6 +124,7 @@ public class GameManager : MonoBehaviour
         PlayTemporarySkillParticle();
         gameOver = true;
         GameOver();
+        SceneManager.LoadScene("Main");
     }
 
     private void LoseBall(GameObject ball)
@@ -198,9 +187,16 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameState = GameState.Prepare;
+        healthSO = ScriptableObject.FindObjectOfType<HealthSO>() ?? ScriptableObject.CreateInstance<HealthSO>();
+        healthSO.Init();
+        healthSO.NoLifeLeft += OutOfLife;
+        BallController.BallLost += LoseBall;
 
-        ScoreManager.Instance.Reset();
+        GameState = GameState.Prepare;
+        
+        score = ScriptableObject.FindObjectOfType<ScoreSO>() ?? ScriptableObject.CreateInstance<ScoreSO>();
+        score.Reset();
+
         currentTargetPoint = null;
         currentTemporarySkillPoint = null;
         ushapeSpriteRenderer = ushape.GetComponent<SpriteRenderer>();
@@ -212,17 +208,8 @@ public class GameManager : MonoBehaviour
         ushapeSpriteRenderer.color = color;
         backgroundSpriteRenderer.color = color; 
         fenceSpriteRenderer.color = color;
-
-        if (!UIManager.firstLoad)
-        {
-            StartGame();
-            CreateBall();
-        }
-    }
-	
-    // Update is called once per frame
-    void Update()
-    {
+        StartGame();
+        CreateBall();
     }
 
     /// <summary>
@@ -230,6 +217,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
+        gameOver = false;
         GameState = GameState.Playing;
 
         //Enable goldPoint, create gold at that position and start processing
@@ -239,6 +227,12 @@ public class GameManager : MonoBehaviour
         Vector2 pos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
         currentTarget = Instantiate(targetPrefab, pos, Quaternion.identity) as GameObject;
         StartCoroutine("Processing");
+    }
+
+    private void OnDestroy()
+    {
+        healthSO.NoLifeLeft -= OutOfLife;
+        BallController.BallLost -= LoseBall;
     }
 
     void GameOver()
@@ -317,7 +311,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CheckAndUpdateValue()
     {
-        if (ScoreManager.Instance.Score % scoreToIncreaseDifficulty == 0)
+        if (score.Score % scoreToIncreaseDifficulty == 0)
         {
             //Change background element color
             Color color = backgroundColor[Random.Range(0, backgroundColor.Length)];
@@ -343,7 +337,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (ScoreManager.Instance.Score % scoreToAddTemporarySkill == 0)
+        if (score.Score % scoreToAddTemporarySkill == 0)
         {
             DisableTemporarySkill();
             if(Random.Range(1, 4) < 3)
@@ -393,7 +387,8 @@ public class GameManager : MonoBehaviour
             t += Time.deltaTime;
             float fraction = t / temporarySkillAliveTime;
             float newF = Mathf.Lerp(0, 1, fraction);
-            img.fillAmount = newF;
+            if(img != null)
+                img.fillAmount = newF;
             yield return null;
         }
 
@@ -409,7 +404,7 @@ public class GameManager : MonoBehaviour
     }
     void OnApplicationQuit()
     {
-        var highScore = ScoreManager.Instance.GetHighScore();
+        var highScore = score.GetHighScore();
         var played = Utilities.Instance.PlayedGameAmount();
         FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Quit,  highScore, played, LastSignificantGameStates));
 
@@ -417,7 +412,7 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
-        var highScore = ScoreManager.Instance.GetHighScore();
+        var highScore = score.GetHighScore();
         var played = Utilities.Instance.PlayedGameAmount();
         FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Pause, highScore, played, LastSignificantGameStates));
     }

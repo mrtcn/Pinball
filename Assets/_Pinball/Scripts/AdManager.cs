@@ -1,4 +1,6 @@
 using GoogleMobileAds.Api;
+using SgLib;
+using System;
 using UnityEngine;
 
 public class AdManager : MonoBehaviour
@@ -16,10 +18,35 @@ public class AdManager : MonoBehaviour
 #else
     string _adUnitId = "unused";
 #endif
-
-
+    private HealthSO healthSO;
     private InterstitialAd interstitialAd;
+    private readonly int playedToShowAd = 2;
 
+    private void Start()
+    {
+        // Initialize the Google Mobile Ads SDK.
+        MobileAds.Initialize((InitializationStatus initStatus) =>
+        {
+            // This callback is called once the MobileAds SDK is initialized.
+            LoadInterstitialAd();
+        });
+
+        healthSO = ScriptableObject.FindObjectOfType<HealthSO>() ?? ScriptableObject.CreateInstance<HealthSO>();
+        healthSO.NoLifeLeft += CheckToDisplayAd;
+    }
+
+    private void OnDestroy()
+    {
+        if(healthSO != null)
+            healthSO.NoLifeLeft -= CheckToDisplayAd;
+    }
+
+    private void CheckToDisplayAd()
+    {
+        var played = Utilities.Instance.UpdatePlayedGame(1);
+        if (played % playedToShowAd == 0)
+            ShowAd();
+    }
     /// <summary>
     /// Loads the interstitial ad.
     /// </summary>
