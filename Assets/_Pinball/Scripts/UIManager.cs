@@ -6,16 +6,15 @@ using SgLib;
 using Assets._Pinball.Scripts.Services;
 using Unity.Services.Authentication;
 using GooglePlayGames;
+using System.Threading.Tasks;
 
 #if EASY_MOBILE
 using EasyMobile;
 #endif
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
     public static bool firstLoad = true;
-
-    public GameManager gameManager;
     public Text score;
     public Text scoreInScoreBg;
     public Text bestScore;
@@ -31,17 +30,19 @@ public class UIManager : MonoBehaviour
     public GameObject restorePurchaseBtn;
     public GameObject shareBtn;
 
+    private ScoreSO scoreSO;
     Animator scoreAnimator;
     bool hasCheckedGameOver = false;
 
     // Use this for initialization
     void Start()
     {
-        ScoreManager.Instance.ScoreUpdated += OnScoreUpdated;
+        scoreSO = ScriptableObject.FindObjectOfType<ScoreSO>() ?? ScriptableObject.CreateInstance<ScoreSO>();
+        scoreSO.ScoreUpdated += OnScoreUpdated;
 
         scoreAnimator = score.GetComponent<Animator>();
         score.gameObject.SetActive(false);
-        scoreInScoreBg.text = ScoreManager.Instance.Score.ToString();
+        scoreInScoreBg.text = scoreSO.Score.ToString();
 
         // Show or hide premium buttons
         bool enablePremium = PremiumFeaturesManager.Instance.enablePremiumFeatures;
@@ -50,30 +51,20 @@ public class UIManager : MonoBehaviour
         removeAdsBtn.SetActive(enablePremium);
         restorePurchaseBtn.SetActive(enablePremium);
         shareBtn.SetActive(false);  // share button only shows when game over
-            
-        if (!firstLoad)
-        {
-            HideAllButtons();
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
         if(score != null)
-            score.text = ScoreManager.Instance.Score.ToString();
-        bestScore.text = ScoreManager.Instance.HighScore.ToString();
+            score.text = scoreSO.Score.ToString();
+        bestScore.text = scoreSO.HighScore.ToString();
         UpdateMuteButtons();
-        if (gameManager.gameOver && !hasCheckedGameOver)
-        {
-            hasCheckedGameOver = true;
-            Invoke("ShowButtons", 1f);
-        }
     }
 
     private void OnDestroy()
     {
-        ScoreManager.Instance.ScoreUpdated -= OnScoreUpdated;
+        scoreSO.ScoreUpdated -= OnScoreUpdated;
     }
 
     void OnScoreUpdated(int newScore)
@@ -83,24 +74,14 @@ public class UIManager : MonoBehaviour
 
     public void HandlePlayButton()
     {
-        if (!firstLoad)
-        {
-            StartCoroutine(Restart());
-        }
-        else
-        {
-            HideAllButtons();
-            gameManager.StartGame();
-            gameManager.CreateBall();
-            firstLoad = false;
-        }
+        SceneManager.LoadScene("Level1");
     }
 
     public void ShowButtons()
     {
         buttons.SetActive(true);
         score.gameObject.SetActive(false);
-        scoreInScoreBg.text = ScoreManager.Instance.Score.ToString();
+        scoreInScoreBg.text = scoreSO.Score.ToString();
 
         bool enablePremium = PremiumFeaturesManager.Instance.enablePremiumFeatures;
         leaderboardBtn.SetActive(enablePremium);
@@ -109,24 +90,6 @@ public class UIManager : MonoBehaviour
         restorePurchaseBtn.SetActive(enablePremium);
         shareBtn.SetActive(enablePremium);
 
-    }
-
-    public void HideAllButtons()
-    {
-        buttons.SetActive(false);
-        score.gameObject.SetActive(true);
-    }
-
-    public void FinishLoading()
-    {
-        if (firstLoad)
-        {
-            ShowButtons();
-        }
-        else
-        {
-            HideAllButtons();
-        }
     }
 
     void UpdateMuteButtons()
@@ -141,12 +104,6 @@ public class UIManager : MonoBehaviour
             unMuteBtn.gameObject.SetActive(true);
             muteBtn.gameObject.SetActive(false);
         }
-    }
-
-    IEnumerator Restart()
-    {
-        yield return new WaitForSeconds(0.2f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public async void ShowLeaderboardUI()

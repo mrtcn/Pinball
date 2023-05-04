@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AppInfo : MonoBehaviour
+public class AppInfo : Singleton<AppInfo>
 {
-    public static AppInfo Instance;
 
     // App-specific metadata
     public string APP_NAME = "Pinball Crush";
@@ -57,27 +56,17 @@ public class AppInfo : MonoBehaviour
 
     void Awake()
     {
-        if (Instance)
-        {
-            DestroyImmediate(gameObject);
+        #if UNITY_EDITOR
+        if (clearPlayerPrefs)
+        { 
+            PlayerPrefs.DeleteAll();
+            Debug.Log("\n\n\n");
+            Debug.Log("***********************************");
+            Debug.Log("ATTENTION: PlayerPrefs was cleared!");
+            Debug.Log("***********************************");
+            Debug.Log("\n\n\n");
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            #if UNITY_EDITOR
-            if (clearPlayerPrefs)
-            { 
-                PlayerPrefs.DeleteAll();
-                Debug.Log("\n\n\n");
-                Debug.Log("***********************************");
-                Debug.Log("ATTENTION: PlayerPrefs was cleared!");
-                Debug.Log("***********************************");
-                Debug.Log("\n\n\n");
-            }
-            #endif
-        }
+        #endif
     }
 
     void Start()

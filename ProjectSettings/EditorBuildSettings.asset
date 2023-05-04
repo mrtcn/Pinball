@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Scenes/Main.unity
-    guid: da04357734d7fc844a316a7fd9322a38
+  - enabled: 1
+    path: Assets/_Pinball/Scenes/Main.unity
+    guid: 7cbbd970ba3032947b242b54351661d6
+  - enabled: 1
+    path: Assets/_Pinball/Scenes/Level1.unity
+    guid: e8574b9f51506c44781bf76e8605ad5e
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 8d8c52f80bf367f4093701b96153a736,
       type: 2}
