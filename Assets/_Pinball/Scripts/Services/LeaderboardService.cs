@@ -15,7 +15,7 @@ namespace Assets._Pinball.Scripts.Services
     {
         public static LeaderboardService Instance { get; private set; }
         [SerializeField]
-        private GameObject scrollView;
+        private GameObject leaderboardWrapper;
         [SerializeField]
         private List<TextMeshProUGUI> names;
         [SerializeField]
@@ -54,7 +54,7 @@ namespace Assets._Pinball.Scripts.Services
 
         public void Close()
         {
-            scrollView.SetActive(false);
+            leaderboardWrapper.SetActive(false);
         }
 
         private async void AppleUserLoggedIn(UserInfo userInfo)
@@ -78,7 +78,7 @@ namespace Assets._Pinball.Scripts.Services
         {
             try
             {
-                scrollView.SetActive(true);
+                leaderboardWrapper.SetActive(true);
 
                 var options = new GetPlayerRangeOptions();
                 options.RangeLimit = AppInfo.Instance.LeaderboardStep;
