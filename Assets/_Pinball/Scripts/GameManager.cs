@@ -70,16 +70,16 @@ public class GameManager : Singleton<GameManager>
     public GameObject temporarySkillPointManager;
     public GameObject leftFlipper;
     public GameObject rightFlipper;
-    public GameObject targetPrefab;
+    //public GameObject targetPrefab;
     public GameObject extraBallPrefab;
     public GameObject extraLifePrefab;    
     public GameObject ushape;
     public GameObject background;
     public GameObject fence;
     [HideInInspector]
-    public GameObject currentTargetPoint;
-    [HideInInspector]
-    public GameObject currentTarget;
+    public GameObject currentTargetPointWrapper;
+    //[HideInInspector]
+    //public GameObject currentTarget;
     [HideInInspector]
     public GameObject currentTemporarySkillPoint;
     [HideInInspector]
@@ -92,7 +92,7 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Gameplay Config")]
     public Color[] backgroundColor;
-    public int scoreToIncreaseDifficulty = AppInfo.Instance.TargetScore * 20;
+    public int scoreToIncreaseDifficulty;
     public float targetAliveTime = 20;
     public float targetAliveTimeDecreaseValue = 1;
     public float temporarySkillAliveTime = 10;
@@ -175,18 +175,19 @@ public class GameManager : Singleton<GameManager>
     private void DestroyTarget()
     {
         StopCoroutine("Processing");
-        currentTargetPoint.SetActive(false);
-        ParticleSystem particle = Instantiate(hitGold, currentTarget.transform.position, Quaternion.identity) as ParticleSystem;
+        currentTargetPointWrapper.SetActive(false);
+        ParticleSystem particle = Instantiate(hitGold, currentTargetPointWrapper.transform.position, Quaternion.identity) as ParticleSystem;
         var main = particle.main;
-        main.startColor = currentTarget.gameObject.GetComponent<SpriteRenderer>().color;
+        //main.startColor = currentTarget.gameObject.GetComponent<SpriteRenderer>().color;
         particle.Play();
         Destroy(particle.gameObject, 1f);
-        Destroy(currentTarget.gameObject);
+        //Destroy(currentTarget.gameObject);
     }
 
     // Use this for initialization
     void Start()
     {
+        scoreToIncreaseDifficulty = AppInfo.TargetScore * 20;
         healthSO = ScriptableObject.FindObjectOfType<HealthSO>() ?? ScriptableObject.CreateInstance<HealthSO>();
         healthSO.Init();
         healthSO.NoLifeLeft += OutOfLife;
@@ -197,7 +198,7 @@ public class GameManager : Singleton<GameManager>
         score = ScriptableObject.FindObjectOfType<ScoreSO>() ?? ScriptableObject.CreateInstance<ScoreSO>();
         score.Reset();
 
-        currentTargetPoint = null;
+        currentTargetPointWrapper = null;
         currentTemporarySkillPoint = null;
         ushapeSpriteRenderer = ushape.GetComponent<SpriteRenderer>();
         backgroundSpriteRenderer = background.GetComponent<SpriteRenderer>();
@@ -221,11 +222,12 @@ public class GameManager : Singleton<GameManager>
         GameState = GameState.Playing;
 
         //Enable goldPoint, create gold at that position and start processing
-        GameObject targetPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).gameObject;
-        targetPoint.SetActive(true);
-        currentTargetPoint = targetPoint;
-        Vector2 pos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
-        currentTarget = Instantiate(targetPrefab, pos, Quaternion.identity) as GameObject;
+        var targetPointWrapperTransform = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount));
+        var targetPointWrapper = targetPointWrapperTransform.gameObject;
+        targetPointWrapper.SetActive(true);
+        currentTargetPointWrapper = targetPointWrapperTransform.gameObject;
+        //Vector2 pos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
+        //currentTarget = Instantiate(targetPrefab, pos, Quaternion.identity) as GameObject;
         StartCoroutine("Processing");
     }
 
@@ -259,18 +261,20 @@ public class GameManager : Singleton<GameManager>
         {
             //Stop all processing, disable current gold
             StopCoroutine("Processing");
-            currentTargetPoint.SetActive(false);
+            currentTargetPointWrapper.SetActive(false);
 
             //Random new goldPoint and create new gold, then start processing
-            GameObject goldPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).gameObject;
-            while (currentTargetPoint == goldPoint)
+            Transform targetPointWrapperTransform = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount));
+            GameObject goldPoint = targetPointWrapperTransform.GetChild(0).gameObject;
+            GameObject oldGoldPoint = currentTargetPointWrapper.transform.GetChild(0).gameObject;
+            while (oldGoldPoint == goldPoint)
             {
-                goldPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).gameObject;
+                goldPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).GetChild(0).gameObject;
             }
-            goldPoint.SetActive(true);
-            currentTargetPoint = goldPoint;
-            Vector2 goldPos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
-            currentTarget = Instantiate(targetPrefab, goldPos, Quaternion.identity) as GameObject;
+            targetPointWrapperTransform.gameObject.SetActive(true);
+            currentTargetPointWrapper = targetPointWrapperTransform.gameObject;
+            //Vector2 goldPos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
+            //currentTarget = Instantiate(targetPrefab, goldPos, Quaternion.identity) as GameObject;
             StartCoroutine("Processing");
 
             LastSignificantGameStates.Enqueue(LastSignificantGameState.TargetReceived);
@@ -349,7 +353,7 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator Processing()
     {
-        Image img = currentTargetPoint.GetComponent<Image>();
+        Image img = currentTargetPointWrapper.transform.GetChild(0).GetComponent<Image>();
         img.fillAmount = 0;
         float t = 0;
         while (t < targetAliveTime)

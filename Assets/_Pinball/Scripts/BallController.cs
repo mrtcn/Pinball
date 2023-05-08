@@ -99,10 +99,11 @@ public class BallController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.LogError($"other.tag: {other.name}");
         if (other.CompareTag("Gold") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.hitGold);
-            score.AddScore(AppInfo.Instance.TargetScore);
+            score.AddScore(AppInfo.TargetScore);
             GameManager.Instance.CheckAndUpdateValue();
 
             PlayParticle(other, GameManager.Instance.hitGold);
