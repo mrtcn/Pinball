@@ -12,12 +12,6 @@ public class BallController : MonoBehaviour
     private ScoreSO score;
     [SerializeField]
     private Rigidbody2D ballRigidBody;
-    [SerializeField]
-    private float x = 0;
-    [SerializeField]
-    private float y = 0;
-    [SerializeField]
-    private float z = 0;
     private Vector3 originalPosition = new Vector3(0,0,0);
     // Use this for initialization
     void Start()
@@ -108,7 +102,7 @@ public class BallController : MonoBehaviour
         if (other.CompareTag("Gold") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.hitGold);
-            score.AddScore(1);
+            score.AddScore(AppInfo.Instance.TargetScore);
             GameManager.Instance.CheckAndUpdateValue();
 
             PlayParticle(other, GameManager.Instance.hitGold);

@@ -18,6 +18,8 @@ public class AppInfo : Singleton<AppInfo>
     [HideInInspector]
     public string LeaderboardId = "worldleaderboard";
     public int LeaderboardStep = 10;
+    [HideInInspector]
+    public int TargetScore;
 
     // App Store link
     [HideInInspector]
@@ -83,5 +85,6 @@ public class AppInfo : Singleton<AppInfo>
 #else
         LeaderboardId = "worldleaderboard";
 #endif
+        TargetScore = 100;
     }
 }

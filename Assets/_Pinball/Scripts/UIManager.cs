@@ -1,12 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
-using SgLib;
 using Assets._Pinball.Scripts.Services;
 using Unity.Services.Authentication;
 using GooglePlayGames;
-using System.Threading.Tasks;
 
 #if EASY_MOBILE
 using EasyMobile;
@@ -22,7 +19,6 @@ public class UIManager : Singleton<UIManager>
     public Button muteBtn;
     public Button unMuteBtn;
 
-
     [Header("Premium Buttons")]
     public GameObject leaderboardBtn;
     public GameObject achievementBtn;
@@ -31,16 +27,11 @@ public class UIManager : Singleton<UIManager>
     public GameObject shareBtn;
 
     private ScoreSO scoreSO;
-    Animator scoreAnimator;
-    bool hasCheckedGameOver = false;
 
     // Use this for initialization
     void Start()
     {
         scoreSO = ScriptableObject.FindObjectOfType<ScoreSO>() ?? ScriptableObject.CreateInstance<ScoreSO>();
-        scoreSO.ScoreUpdated += OnScoreUpdated;
-
-        scoreAnimator = score.GetComponent<Animator>();
         score.gameObject.SetActive(false);
         scoreInScoreBg.text = scoreSO.Score.ToString();
 
@@ -60,16 +51,6 @@ public class UIManager : Singleton<UIManager>
             score.text = scoreSO.Score.ToString();
         bestScore.text = scoreSO.HighScore.ToString();
         UpdateMuteButtons();
-    }
-
-    private void OnDestroy()
-    {
-        scoreSO.ScoreUpdated -= OnScoreUpdated;
-    }
-
-    void OnScoreUpdated(int newScore)
-    {
-        scoreAnimator.Play("NewScore");
     }
 
     public void HandlePlayButton()

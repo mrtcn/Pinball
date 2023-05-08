@@ -92,9 +92,9 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Gameplay Config")]
     public Color[] backgroundColor;
-    public int scoreToIncreaseDifficulty = 10;
+    public int scoreToIncreaseDifficulty = AppInfo.Instance.TargetScore * 20;
     public float targetAliveTime = 20;
-    public float targetAliveTimeDecreaseValue = 2;
+    public float targetAliveTimeDecreaseValue = 1;
     public float temporarySkillAliveTime = 10;
     public float temporarySkillAliveTimeDecreaseValue = 1;
     public int minTargetAliveTime = 3;
