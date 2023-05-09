@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
@@ -98,16 +99,20 @@ public class BallController : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.LogError($"other.tag: {other.name}");
+    {        
         if (other.CompareTag("Gold") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.hitGold);
+            Debug.LogError($"Gold hit sound");
             score.AddScore(AppInfo.TargetScore);
+            Debug.LogError($"Score added");
             GameManager.Instance.CheckAndUpdateValue();
 
+            Debug.LogError($"CheckAndUpdateValue invoked");
             PlayParticle(other, GameManager.Instance.hitGold);
+            Debug.LogError($"Particle played");
             GameManager.Instance.CreateTarget();
+            Debug.LogError($"Create target invoked");
         }
         else if (other.CompareTag("ExtraBall") && !GameManager.Instance.gameOver)
         {
