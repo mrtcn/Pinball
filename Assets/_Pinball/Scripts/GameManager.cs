@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Assets._Pinball.Scripts.Services;
 using Assets._Pinball.Scripts.Models;
 using UnityEngine.SceneManagement;
+using static UnityEditor.PlayerSettings;
 
 public enum GameState
 {
@@ -225,7 +226,7 @@ public class GameManager : Singleton<GameManager>
         var targetPointWrapperTransform = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount));
         var targetPointWrapper = targetPointWrapperTransform.gameObject;
         targetPointWrapper.SetActive(true);
-        currentTargetPointWrapper = targetPointWrapperTransform.gameObject;
+        currentTargetPointWrapper = Instantiate(targetPointWrapperTransform.gameObject, targetPointWrapperTransform.transform.position, Quaternion.identity) as GameObject;
         //Vector2 pos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
         //currentTarget = Instantiate(targetPrefab, pos, Quaternion.identity) as GameObject;
         StartCoroutine("Processing");
@@ -265,17 +266,21 @@ public class GameManager : Singleton<GameManager>
 
             //Random new goldPoint and create new gold, then start processing
             Transform targetPointWrapperTransform = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount));
-            GameObject goldPoint = targetPointWrapperTransform.GetChild(0).gameObject;
-            GameObject oldGoldPoint = currentTargetPointWrapper.transform.GetChild(0).gameObject;
-            while (oldGoldPoint == goldPoint)
+            
+            
+            if (targetPointManager.transform.childCount <= 1) return;
+
+
+            while (currentTargetPointWrapper == targetPointWrapperTransform.gameObject)
             {
-                goldPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).GetChild(0).gameObject;
+                targetPointWrapperTransform = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount));
             }
-            targetPointWrapperTransform.gameObject.SetActive(true);
-            currentTargetPointWrapper = targetPointWrapperTransform.gameObject;
+            
+            currentTargetPointWrapper = Instantiate(targetPointWrapperTransform.gameObject, targetPointWrapperTransform.transform.position, Quaternion.identity) as GameObject;
+            currentTargetPointWrapper.SetActive(true);
             //Vector2 goldPos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
-            //currentTarget = Instantiate(targetPrefab, goldPos, Quaternion.identity) as GameObject;
-            StartCoroutine("Processing");
+            //currentTarget = ;
+            StartCoroutine("Processing"); 
 
             LastSignificantGameStates.Enqueue(LastSignificantGameState.TargetReceived);
         }
@@ -296,8 +301,9 @@ public class GameManager : Singleton<GameManager>
             while (currentTemporarySkillPoint == temporarySkillPoint)
             {
                 temporarySkillPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+                temporarySkillPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
             }
-            temporarySkillPoint.SetActive(true);
+            temporarySkillPoint.SetActive(true); 
             currentTemporarySkillPoint = temporarySkillPoint;
             Vector2 temporarySkillPos = Camera.main.ScreenToWorldPoint(currentTemporarySkillPoint.transform.position);
             currentTemporarySkill = Instantiate(temporarySkillPrefab, temporarySkillPos, Quaternion.identity) as GameObject;
@@ -353,15 +359,15 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator Processing()
     {
-        Image img = currentTargetPointWrapper.transform.GetChild(0).GetComponent<Image>();
-        img.fillAmount = 0;
+        //Image img = currentTargetPointWrapper.transform.GetChild(0).GetComponent<Image>();
+        //img.fillAmount = 0;
         float t = 0;
         while (t < targetAliveTime)
         {
             t += Time.deltaTime;
-            float fraction = t / targetAliveTime;
-            float newF = Mathf.Lerp(0, 1, fraction);
-            img.fillAmount = newF;
+            //float fraction = t / targetAliveTime;
+            //float newF = Mathf.Lerp(0, 1, fraction);
+            //img.fillAmount = newF;
             yield return null;
         }
 

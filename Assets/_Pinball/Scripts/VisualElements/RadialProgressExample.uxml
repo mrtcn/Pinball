@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Pinball/Scripts/VisualElements/RadialProgress.uss?fileID=7433441132597879392&amp;guid=a1aa614cc2500034ca4d9f5b0a050074&amp;type=3#RadialProgress" />
+    <Assets._Pinball.Scripts.VisualElements.RadialProgress name="radial-progress" background-color="#F30A0AFF" fill-color="#1BFA20FF" />
+</ui:UXML>
