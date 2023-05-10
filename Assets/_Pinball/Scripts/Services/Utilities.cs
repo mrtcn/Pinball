@@ -167,7 +167,7 @@ namespace SgLib
         /// Returns the overall played games amount
         /// </summary>
         /// <returns></returns>
-        public int PlayedGameAmount()
+        public static int PlayedGameAmount()
         {
             return PlayerPrefs.GetInt(PLAYED, 0);
         }

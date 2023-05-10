@@ -11,11 +11,16 @@ public class ScoreSO : ScriptableObject
 
     public bool HasNewHighScore { get; private set; }
 
-    public event Action<int> ScoreUpdated = delegate { };
+    public event Action<int> OnScoreUpdate = delegate { };
     public event Action<int> OnHighscoreUpdated = delegate { };
 
     // key name to store high score in PlayerPrefs
     private const string HIGHSCORE = "HIGHSCORE";
+
+    public void Init()
+    {
+        Reset();
+    }
 
     public void Reset()
     {
@@ -32,7 +37,7 @@ public class ScoreSO : ScriptableObject
         Score += amount;
 
         // Fire event
-        ScoreUpdated(Score);
+        OnScoreUpdate(amount);
 
         if (Score > HighScore)
         {

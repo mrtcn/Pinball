@@ -5,17 +5,53 @@ public class BallController : MonoBehaviour
 
     public static event System.Action<GameObject> BallLost = delegate { };
     public static event System.Action ExtraLifeCollected = delegate { };
-
+    public float rotateSpeed = 0;
+    public float upMaxSpeed = 30;
+    public float downMaxSpeed = 5;
     private SpriteRenderer spriteRenderer;
     private ScoreSO score;
+    [SerializeField]
+    private Rigidbody2D ballRigidBody;
+    private Vector3 originalPosition = new Vector3(0,0,0);
     // Use this for initialization
     void Start()
     {
         gameObject.SetActive(false);
         spriteRenderer = GetComponent<SpriteRenderer>();
-        //transform.position += (Random.value >= 0.5f) ? (new Vector3(0.2f, 0)) : (new Vector3(-0.2f, 0));
         gameObject.SetActive(true);
         score = ScriptableObject.FindObjectOfType<ScoreSO>()??ScriptableObject.CreateInstance<ScoreSO>();
+    }
+    private void Update()
+    {   Vector2 v = ballRigidBody.velocity;
+        float speed = Vector3.Magnitude(v);
+        Vector3 moveDirection = ballRigidBody.transform.position - originalPosition;
+
+        if (moveDirection.y >= 0)
+            ballRigidBody.velocity = Vector3.ClampMagnitude(ballRigidBody.velocity, upMaxSpeed);
+        else
+            ballRigidBody.velocity = Vector3.ClampMagnitude(ballRigidBody.velocity, downMaxSpeed);
+
+        originalPosition = ballRigidBody.transform.position;
+        if (moveDirection != Vector3.zero)
+        {
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            if (moveDirection.y >= 0)
+            {
+                angle = Mathf.Clamp(angle, -20, 20);
+                if(moveDirection.x >= 0)
+                    ballRigidBody.transform.rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+                else
+                    ballRigidBody.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }                
+            else if (speed > 5)
+            {
+
+                angle = Mathf.Clamp(angle, -205, -165);
+                ballRigidBody.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }                
+            else
+                ballRigidBody.transform.rotation = Quaternion.identity;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -31,16 +67,22 @@ public class BallController : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other)
-    {
+    {        
         if (other.CompareTag("Gold") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.hitGold);
-            score.AddScore(1);
+            Debug.LogError($"Gold hit sound");
+            score.AddScore(AppInfo.TargetScore);
+            Debug.LogError($"Score added");
             GameManager.Instance.CheckAndUpdateValue();
 
+            Debug.LogError($"CheckAndUpdateValue invoked");
             PlayParticle(other, GameManager.Instance.hitGold);
+            Debug.LogError($"Particle played");
             GameManager.Instance.CreateTarget();
-        } else if(other.CompareTag("ExtraBall") && !GameManager.Instance.gameOver)
+            Debug.LogError($"Create target invoked");
+        }
+        else if (other.CompareTag("ExtraBall") && !GameManager.Instance.gameOver)
         {
             SoundManager.Instance.PlaySound(SoundManager.Instance.rewarded);
             PlayParticle(other, GameManager.Instance.hitTemporarySkill);

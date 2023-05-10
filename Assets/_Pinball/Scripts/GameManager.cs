@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 using SgLib;
 using System.Collections.Generic;
 using Assets._Pinball.Scripts.Services;
@@ -70,16 +69,16 @@ public class GameManager : Singleton<GameManager>
     public GameObject temporarySkillPointManager;
     public GameObject leftFlipper;
     public GameObject rightFlipper;
-    public GameObject targetPrefab;
+    //public GameObject targetPrefab;
     public GameObject extraBallPrefab;
     public GameObject extraLifePrefab;    
     public GameObject ushape;
     public GameObject background;
     public GameObject fence;
     [HideInInspector]
-    public GameObject currentTargetPoint;
-    [HideInInspector]
-    public GameObject currentTarget;
+    public GameObject currentTargetPointWrapper;
+    //[HideInInspector]
+    //public GameObject currentTarget;
     [HideInInspector]
     public GameObject currentTemporarySkillPoint;
     [HideInInspector]
@@ -92,9 +91,9 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Gameplay Config")]
     public Color[] backgroundColor;
-    public int scoreToIncreaseDifficulty = 10;
+    public int scoreToIncreaseDifficulty;
     public float targetAliveTime = 20;
-    public float targetAliveTimeDecreaseValue = 2;
+    public float targetAliveTimeDecreaseValue = 1;
     public float temporarySkillAliveTime = 10;
     public float temporarySkillAliveTimeDecreaseValue = 1;
     public int minTargetAliveTime = 3;
@@ -107,6 +106,7 @@ public class GameManager : Singleton<GameManager>
     private ScoreSO score;
     private HealthSO healthSO;
     private int obstacleCounter = 0;
+    private int playedAmount;
 
     private void LoseLife()
     {
@@ -166,27 +166,36 @@ public class GameManager : Singleton<GameManager>
             StopCoroutine(_tempSkillCoroutine);
 
         if (currentTemporarySkill != null)
+        {
             currentTemporarySkill.SetActive(false);
+            //Destroy(currentTemporarySkill);
+        }
+            
 
         if (currentTemporarySkillPoint != null)
+        {
             currentTemporarySkillPoint.SetActive(false);
+            //Destroy(currentTemporarySkillPoint);
+        }
+            
     }
 
     private void DestroyTarget()
     {
         StopCoroutine("Processing");
-        currentTargetPoint.SetActive(false);
-        ParticleSystem particle = Instantiate(hitGold, currentTarget.transform.position, Quaternion.identity) as ParticleSystem;
+        currentTargetPointWrapper.SetActive(false);
+        ParticleSystem particle = Instantiate(hitGold, currentTargetPointWrapper.transform.position, Quaternion.identity) as ParticleSystem;
         var main = particle.main;
-        main.startColor = currentTarget.gameObject.GetComponent<SpriteRenderer>().color;
+        //main.startColor = currentTarget.gameObject.GetComponent<SpriteRenderer>().color;
         particle.Play();
         Destroy(particle.gameObject, 1f);
-        Destroy(currentTarget.gameObject);
+        Destroy(currentTargetPointWrapper);
     }
 
     // Use this for initialization
     void Start()
     {
+        scoreToIncreaseDifficulty = AppInfo.TargetScore * 20;
         healthSO = ScriptableObject.FindObjectOfType<HealthSO>() ?? ScriptableObject.CreateInstance<HealthSO>();
         healthSO.Init();
         healthSO.NoLifeLeft += OutOfLife;
@@ -197,7 +206,7 @@ public class GameManager : Singleton<GameManager>
         score = ScriptableObject.FindObjectOfType<ScoreSO>() ?? ScriptableObject.CreateInstance<ScoreSO>();
         score.Reset();
 
-        currentTargetPoint = null;
+        currentTargetPointWrapper = null;
         currentTemporarySkillPoint = null;
         ushapeSpriteRenderer = ushape.GetComponent<SpriteRenderer>();
         backgroundSpriteRenderer = background.GetComponent<SpriteRenderer>();
@@ -217,16 +226,19 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void StartGame()
     {
+        playedAmount = Utilities.PlayedGameAmount();
         gameOver = false;
         GameState = GameState.Playing;
 
         //Enable goldPoint, create gold at that position and start processing
-        GameObject targetPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).gameObject;
-        targetPoint.SetActive(true);
-        currentTargetPoint = targetPoint;
-        Vector2 pos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
-        currentTarget = Instantiate(targetPrefab, pos, Quaternion.identity) as GameObject;
+        var targetPointWrapperTransform = FindTargetPointWrapper();
+        InstantiateTargetPoint(targetPointWrapperTransform);
         StartCoroutine("Processing");
+    }
+
+    private Transform FindTargetPointWrapper()
+    {
+        return targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount));
     }
 
     private void OnDestroy()
@@ -258,23 +270,36 @@ public class GameManager : Singleton<GameManager>
         if (!gameOver)
         {
             //Stop all processing, disable current gold
+
+            Debug.LogError($"Coroutine stopping");
             StopCoroutine("Processing");
-            currentTargetPoint.SetActive(false);
+            CleanupTarget();
 
             //Random new goldPoint and create new gold, then start processing
-            GameObject goldPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).gameObject;
-            while (currentTargetPoint == goldPoint)
+            Transform targetPointWrapperTransform = FindTargetPointWrapper();
+            if (targetPointManager.transform.childCount <= 1) return;
+            while (currentTargetPointWrapper == targetPointWrapperTransform.gameObject)
             {
-                goldPoint = targetPointManager.transform.GetChild(Random.Range(0, targetPointManager.transform.childCount)).gameObject;
+
+                Debug.LogError($"While");
+                targetPointWrapperTransform = FindTargetPointWrapper();
             }
-            goldPoint.SetActive(true);
-            currentTargetPoint = goldPoint;
-            Vector2 goldPos = Camera.main.ScreenToWorldPoint(currentTargetPoint.transform.position);
-            currentTarget = Instantiate(targetPrefab, goldPos, Quaternion.identity) as GameObject;
+
+            InstantiateTargetPoint(targetPointWrapperTransform);
+
+            Debug.LogError($"Coroutine started");
             StartCoroutine("Processing");
+            Debug.LogError($"Coroutine finished");
 
             LastSignificantGameStates.Enqueue(LastSignificantGameState.TargetReceived);
+            Debug.LogError($"LastSignificantGameStates");
         }
+    }
+
+    private void InstantiateTargetPoint(Transform targetPointWrapperTransform)
+    {
+        currentTargetPointWrapper = Instantiate(targetPointWrapperTransform.gameObject, targetPointWrapperTransform.transform.position, Quaternion.identity, targetPointManager.transform) as GameObject;
+        currentTargetPointWrapper.SetActive(true);
     }
 
     /// <summary>
@@ -285,18 +310,17 @@ public class GameManager : Singleton<GameManager>
         if (!gameOver)
         {
             if (currentTemporarySkillPoint == null)
-                currentTemporarySkillPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+                currentTemporarySkillPoint = GetTemporarySkillPoint();
 
             //Random new extraBallPoing and create new ExtraBall, then start processing
-            GameObject temporarySkillPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+            GameObject temporarySkillPoint = GetTemporarySkillPoint();
             while (currentTemporarySkillPoint == temporarySkillPoint)
             {
-                temporarySkillPoint = temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
+                temporarySkillPoint = GetTemporarySkillPoint();
             }
             temporarySkillPoint.SetActive(true);
             currentTemporarySkillPoint = temporarySkillPoint;
-            Vector2 temporarySkillPos = Camera.main.ScreenToWorldPoint(currentTemporarySkillPoint.transform.position);
-            currentTemporarySkill = Instantiate(temporarySkillPrefab, temporarySkillPos, Quaternion.identity) as GameObject;
+            currentTemporarySkill = InstantiateTemporarySkill(temporarySkillPrefab);
             _tempSkillCoroutine = StartCoroutine(TemporarySkillProcessing());
 
             if (temporarySkillPrefab.tag.Contains("ExtraLife"))
@@ -304,6 +328,17 @@ public class GameManager : Singleton<GameManager>
             else if (temporarySkillPrefab.tag.Contains("ExtraBall"))
                 LastSignificantGameStates.Enqueue(LastSignificantGameState.ExtraBallReceived);
         }
+    }
+
+    private GameObject InstantiateTemporarySkill(GameObject temporarySkillPrefab)
+    {
+        Vector2 temporarySkillPos = Camera.main.ScreenToWorldPoint(currentTemporarySkillPoint.transform.position);
+        return Instantiate(temporarySkillPrefab, temporarySkillPos, Quaternion.identity) as GameObject;
+    }
+
+    private GameObject GetTemporarySkillPoint()
+    {
+        return temporarySkillPointManager.transform.GetChild(Random.Range(0, temporarySkillPointManager.transform.childCount)).gameObject;
     }
 
     /// <summary>
@@ -349,46 +384,60 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator Processing()
     {
-        Image img = currentTargetPoint.GetComponent<Image>();
-        img.fillAmount = 0;
+        //Image img = currentTargetPointWrapper.transform.GetChild(0).GetComponent<Image>();
+        //img.fillAmount = 0;
         float t = 0;
+        Debug.LogError("Processing before while");
         while (t < targetAliveTime)
         {
             t += Time.deltaTime;
-            float fraction = t / targetAliveTime;
-            float newF = Mathf.Lerp(0, 1, fraction);
-            img.fillAmount = newF;
+            //float fraction = t / targetAliveTime;
+            //float newF = Mathf.Lerp(0, 1, fraction);
+            //img.fillAmount = newF;
             yield return null;
         }
+        Debug.LogError("Processing after while");
 
         if (!gameOver)
         {
+            Debug.LogError("Before cleanup target");
+            CleanupTarget();
             //Cleanup removed balls
             listBall.RemoveAll(x => x == null);
             var count = listBall.Count;
 
+            Debug.LogError("Before ball count for");
             for (int i = 0; i < count; i++)
             {
-                var ball = listBall[listBall.Count -1];
+                var ball = listBall[listBall.Count - 1];
                 ball.GetComponent<BallController>().Exploring();
                 LoseBall(ball);
             }
+
+            Debug.LogError("Processing before LastSignificantGameStates");
             LastSignificantGameStates.Enqueue(LastSignificantGameState.TargetMissed);
+            Debug.LogError("Processing after LastSignificantGameStates");
         }
+    }
+
+    private void CleanupTarget()
+    {
+        currentTargetPointWrapper.SetActive(false);
+        Destroy(currentTargetPointWrapper);
     }
 
     IEnumerator TemporarySkillProcessing()
     {
-        Image img = currentTemporarySkillPoint.GetComponent<Image>();
-        img.fillAmount = 0;
+        //Image img = currentTemporarySkillPoint.GetComponent<Image>();
+        //img.fillAmount = 0;
         float t = 0;
         while (t < temporarySkillAliveTime)
         {
             t += Time.deltaTime;
             float fraction = t / temporarySkillAliveTime;
             float newF = Mathf.Lerp(0, 1, fraction);
-            if(img != null)
-                img.fillAmount = newF;
+            //if(img != null)
+            //    img.fillAmount = newF;
             yield return null;
         }
 
@@ -405,15 +454,13 @@ public class GameManager : Singleton<GameManager>
     void OnApplicationQuit()
     {
         var highScore = score.GetHighScore();
-        var played = Utilities.Instance.PlayedGameAmount();
-        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Quit,  highScore, played, LastSignificantGameStates));
+        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Quit,  highScore, playedAmount, LastSignificantGameStates));
 
     }
 
     private void OnApplicationPause(bool pause)
     {
         var highScore = score.GetHighScore();
-        var played = Utilities.Instance.PlayedGameAmount();
-        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Pause, highScore, played, LastSignificantGameStates));
+        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Pause, highScore, playedAmount, LastSignificantGameStates));
     }
 }
