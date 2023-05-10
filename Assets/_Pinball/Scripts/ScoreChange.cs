@@ -34,5 +34,10 @@ namespace Assets._Pinball.Scripts
                 }
             }
         }
+
+        private void OnDestroy()
+        {
+            score.OnScoreUpdate -= ScoreUpdated;
+        }
     }
 }

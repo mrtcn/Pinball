@@ -17,6 +17,11 @@ public class ScoreSO : ScriptableObject
     // key name to store high score in PlayerPrefs
     private const string HIGHSCORE = "HIGHSCORE";
 
+    public void Init()
+    {
+        Reset();
+    }
+
     public void Reset()
     {
         // Initialize score

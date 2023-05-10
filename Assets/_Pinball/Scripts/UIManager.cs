@@ -32,6 +32,7 @@ public class UIManager : Singleton<UIManager>
     void Start()
     {
         scoreSO = ScriptableObject.FindObjectOfType<ScoreSO>() ?? ScriptableObject.CreateInstance<ScoreSO>();
+        scoreSO.Init();
         score.gameObject.SetActive(false);
         scoreInScoreBg.text = scoreSO.Score.ToString();
 

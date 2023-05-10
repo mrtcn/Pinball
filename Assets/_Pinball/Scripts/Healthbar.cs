@@ -10,7 +10,7 @@ public class Healthbar : MonoBehaviour
     void Start()
     {
         healthSO = ScriptableObject.FindObjectOfType<HealthSO>() ?? ScriptableObject.CreateInstance<HealthSO>();
-        totalHealthBar.fillAmount = healthSO.currentHealth / 10;
+        totalHealthBar.fillAmount = healthSO.currentHealth / 5;
 
         GameManager.LifeLost += ReduceLife;
         BallController.ExtraLifeCollected += CollectExtraLife;
@@ -24,11 +24,11 @@ public class Healthbar : MonoBehaviour
 
     private void CollectExtraLife()
     {
-        currentHealthBar.fillAmount = healthSO.currentHealth / 10;
+        currentHealthBar.fillAmount = healthSO.currentHealth / 5;
     }
 
     private void ReduceLife()
     {
-        currentHealthBar.fillAmount = healthSO.currentHealth / 10;
+        currentHealthBar.fillAmount = healthSO.currentHealth / 5;
     }
 }

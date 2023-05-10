@@ -30,5 +30,9 @@ namespace Assets._Pinball.Scripts
         {            
             scoreToAddText.text = string.Empty;
         }
+        private void OnDestroy()
+        {
+            score.OnScoreUpdate -= ScoreUpdated;
+        }
     }
 }

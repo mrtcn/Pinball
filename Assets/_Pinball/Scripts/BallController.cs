@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
@@ -19,7 +18,6 @@ public class BallController : MonoBehaviour
     {
         gameObject.SetActive(false);
         spriteRenderer = GetComponent<SpriteRenderer>();
-        //transform.position += (Random.value >= 0.5f) ? (new Vector3(0.2f, 0)) : (new Vector3(-0.2f, 0));
         gameObject.SetActive(true);
         score = ScriptableObject.FindObjectOfType<ScoreSO>()??ScriptableObject.CreateInstance<ScoreSO>();
     }
@@ -54,36 +52,6 @@ public class BallController : MonoBehaviour
             else
                 ballRigidBody.transform.rotation = Quaternion.identity;
         }
-
-        ////var direction = transform.InverseTransformDirection(ballRigidBody.velocity);
-        //transform.rotation = Quaternion.identity; 
-        //if (ballRigidBody.velocity.magnitude > maxSpeed)
-        //{
-        //    ballRigidBody.velocity = Vector3.ClampMagnitude(ballRigidBody.velocity, maxSpeed);
-        //}
-        //Vector2 v = ballRigidBody.velocity;
-        //float speed = Vector3.Magnitude(v);
-
-        //var angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-        ////Debug.Log($"Angle: {angle}");
-        //if (v.y > 0)
-        //{
-        //    //Debug.Log($"UP: {speed}");
-        //    angle = Mathf.Clamp(angle, -45, 45);
-        //}            
-        //else
-        //{
-
-        //    //Debug.Log($"DOWN: {speed}");
-        //    if (speed >= 5)
-        //        angle = Mathf.Clamp(angle, -225, -135);
-        //    else
-        //        angle = Mathf.Clamp(angle, -45, 45);
-        //}
-
-        //Quaternion rot = Quaternion.Euler(0, 0, -angle);
-        //transform.rotation = rot;
-        //gameObject.transform.rotation.SetLookRotation(ballRigidBody.velocity);
     }
 
     void OnCollisionEnter2D(Collision2D col)

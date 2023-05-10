@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5362875860083073345}
   - component: {fileID: 2716903888307568045}
   - component: {fileID: 2570142372282616067}
+  - component: {fileID: 535724208700973088}
   m_Layer: 0
   m_Name: ExtraLife
   m_TagString: ExtraLife
@@ -148,3 +149,24 @@ PolygonCollider2D:
       - {x: 0.13, y: -0.48999998}
       - {x: 0.22, y: -0.39}
       - {x: 0.26, y: -0.37}
+--- !u!95 &535724208700973088
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2560860582051929487}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 386d0424a494afd4fb1ac1120bc54033, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

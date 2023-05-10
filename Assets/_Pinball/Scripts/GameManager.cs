@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 using SgLib;
 using System.Collections.Generic;
 using Assets._Pinball.Scripts.Services;
@@ -107,6 +106,7 @@ public class GameManager : Singleton<GameManager>
     private ScoreSO score;
     private HealthSO healthSO;
     private int obstacleCounter = 0;
+    private int playedAmount;
 
     private void LoseLife()
     {
@@ -189,7 +189,7 @@ public class GameManager : Singleton<GameManager>
         //main.startColor = currentTarget.gameObject.GetComponent<SpriteRenderer>().color;
         particle.Play();
         Destroy(particle.gameObject, 1f);
-        //Destroy(currentTarget.gameObject);
+        Destroy(currentTargetPointWrapper);
     }
 
     // Use this for initialization
@@ -226,6 +226,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void StartGame()
     {
+        playedAmount = Utilities.PlayedGameAmount();
         gameOver = false;
         GameState = GameState.Playing;
 
@@ -427,16 +428,16 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator TemporarySkillProcessing()
     {
-        Image img = currentTemporarySkillPoint.GetComponent<Image>();
-        img.fillAmount = 0;
+        //Image img = currentTemporarySkillPoint.GetComponent<Image>();
+        //img.fillAmount = 0;
         float t = 0;
         while (t < temporarySkillAliveTime)
         {
             t += Time.deltaTime;
             float fraction = t / temporarySkillAliveTime;
             float newF = Mathf.Lerp(0, 1, fraction);
-            if(img != null)
-                img.fillAmount = newF;
+            //if(img != null)
+            //    img.fillAmount = newF;
             yield return null;
         }
 
@@ -453,15 +454,13 @@ public class GameManager : Singleton<GameManager>
     void OnApplicationQuit()
     {
         var highScore = score.GetHighScore();
-        var played = Utilities.Instance.PlayedGameAmount();
-        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Quit,  highScore, played, LastSignificantGameStates));
+        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Quit,  highScore, playedAmount, LastSignificantGameStates));
 
     }
 
     private void OnApplicationPause(bool pause)
     {
         var highScore = score.GetHighScore();
-        var played = Utilities.Instance.PlayedGameAmount();
-        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Pause, highScore, played, LastSignificantGameStates));
+        FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Pause, highScore, playedAmount, LastSignificantGameStates));
     }
 }
