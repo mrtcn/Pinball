@@ -12,7 +12,7 @@
     justify-content: center;
     width: 100px; 
     height: 100px;
-}
+} 
 
 .radial-progress__label {
     -unity-text-align: middle-left;

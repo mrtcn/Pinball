@@ -460,6 +460,8 @@ public class GameManager : Singleton<GameManager>
 
     private void OnApplicationPause(bool pause)
     {
+        if (!pause) return;
+
         var highScore = score.GetHighScore();
         FirebaseAnalyticsManager.SendApplicationQuitInfoEvent(new ApplicationQuitInfo(BackgroundType.Pause, highScore, playedAmount, LastSignificantGameStates));
     }
